@@ -1,49 +1,118 @@
-import cv2
-import numpy
 import pygame
-import mediapipe
-import time
+from Core.game_manager import GameManager
+from Core.game_state import Mode
 
-# Khởi tạo pygame
-pygame.init()
+# Vision
+# from Systems.vision.camera import Camera
+# from Systems.vision.hand_detector import HandDetector
+# from Systems.vision.vision_system import VisionSystem
 
-# Kích thước màn hình
-SCREEN_WIDTH = 700
-SCREEN_HEIGHT = 600
+# # Input
+# from Systems.input.mapper import CoordinateMapper
+# from Systems.input.smoother import Smoother
+# from Systems.input.input_system import InputSystem
 
-# Tạo window
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+# # Gameplay
+# from Systems.gameplay.spawner import Spawner
+# from Systems.gameplay.gameplay_system import GameplaySystem
 
-# Đặt title
-pygame.display.set_caption("My Game")
+# # UI
+# from Systems.ui.ui_system import UISystem
 
-# Load image
-player_image = pygame.image.load("./Assets/Images/Basket/basket.png")
-player_image = pygame.transform.scale(player_image, (100, 100))
-player_rect = player_image.get_rect()
-player_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 100)
+# # Other Systems
+# from Systems.collision.collision_system import CollisionSystem
+# from Systems.render.render_system import RenderSystem
+# from Systems.audio.audio_system import AudioSystem
 
-# Game loop
-running = True
 
-while running:
+# 🎯 Factory tạo toàn bộ systems
+# def create_systems(screen):
+    # # Vision
+    # camera = Camera()
+    # detector = HandDetector()
+    # vision_system = VisionSystem(camera, detector)
 
-    # Bắt event
-    for event in pygame.event.get():
+    # # Input
+    # mapper = CoordinateMapper()
+    # smoother = Smoother()
+    # input_system = InputSystem(mapper, smoother)
 
-        # Đóng window
-        if event.type == pygame.QUIT:
-            running = False
+    # # Gameplay
+    # spawner = Spawner()
+    # gameplay_system = GameplaySystem(spawner)
 
-    # Tô background màu đen
-    screen.fill((0, 0, 0))
+    # # UI
+    # ui_system = UISystem()
 
-    # Render image
-    screen.blit(player_image, player_rect)
-    pygame.draw.line(screen, (255, 0, 0), (0, SCREEN_HEIGHT - 50), (SCREEN_WIDTH, SCREEN_HEIGHT - 50), 5)
+    # # Others
+    # collision_system = CollisionSystem()
+    # render_system = RenderSystem(screen)
+    # audio_system = AudioSystem()
 
-    # Update frame
-    pygame.display.update()
+    # return {
+    #     "vision": vision_system,
+    #     "input": input_system,
+    #     "ui": ui_system,
+    #     "gameplay": gameplay_system,
+    #     "collision": collision_system,
+    #     "render": render_system,
+    #     "audio": audio_system,
+    # }
 
-# Thoát pygame
-pygame.quit()
+
+def main():
+    # 🎮 Init pygame
+    pygame.init()
+
+    WIDTH, HEIGHT = 1280, 720
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Fruit Catching Game")
+
+    clock = pygame.time.Clock()
+    FPS = 60
+
+    # 🧩 Create systems
+    # systems = create_systems(screen)
+
+    # 🧠 Inject vào GameManager
+    # game_manager = GameManager(
+    #     vision_system=systems["vision"],
+    #     input_system=systems["input"],
+    #     ui_system=systems["ui"],
+    #     gameplay_system=systems["gameplay"],
+    #     collision_system=systems["collision"],
+    #     render_system=systems["render"],
+    #     audio_system=systems["audio"],
+    # )
+
+    running = True
+
+    # 🔄 MAIN LOOP
+    while running:
+        # 1. Handle system-level events (OS)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+            # optional: ESC → pause
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_ESCAPE:
+                    # if game_manager.state == Mode.PLAYING:
+                    #     game_manager.state = Mode.PAUSE
+                    # elif game_manager.state == Mode.PAUSE:
+                    #     game_manager.state = Mode.PLAYING
+
+        # 2. Update game logic
+        # game_manager.update()
+
+        # 3. Update display
+        pygame.display.flip()
+
+        # 4. FPS control
+        clock.tick(FPS)
+
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
