@@ -3,5 +3,7 @@ class CollisionSystem:
         pass
 
     def check_collision(self, obj1, obj2):
-        # Simple bounding box collision detection
-        pass
+        return False
+
+    def process(self, basket, fruits, bombs):
+        return None

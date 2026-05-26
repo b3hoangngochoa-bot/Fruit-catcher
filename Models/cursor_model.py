@@ -1,8 +1,9 @@
 from Models.base_entity import BaseEntity
 
-class Basket(BaseEntity):
+
+class Cursor(BaseEntity):
     def __init__(self):
-        super().__init__(width=100, height=50, color=(139, 69, 19))
+        super().__init__(width=10, height=10, color=(255, 255, 255))
 
     def update(self, input_data):
         if not self.active:
