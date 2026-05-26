@@ -18,11 +18,15 @@ from Systems.GamePlay.gameplay_system import GamePlaySystem
 
 # UI
 from Systems.UI.ui_system import UISystem
+from Systems.UI.Menu.menu import Menu
+from Systems.UI.Menu.pause_menu import PauseMenu
+from Systems.UI.Menu.game_over_menu import GameOverMenu
 
 # Other Systems
 from Systems.Collision.collision_system import CollisionSystem
 from Systems.Render.render_system import RenderSystem
 from Systems.Audio.audio_system import AudioSystem
+import Utils.constants as constants
 
 
 # 🎯 Factory tạo toàn bộ systems
@@ -42,7 +46,10 @@ def create_systems(screen):
     gameplay_system = GamePlaySystem(spawner)
 
     # UI
-    ui_system = UISystem()
+    menu = Menu()
+    pause_menu = PauseMenu()
+    game_over_menu = GameOverMenu()
+    ui_system = UISystem(menu, pause_menu, game_over_menu)
 
     # Others
     collision_system = CollisionSystem()
@@ -64,12 +71,12 @@ def main():
     # 🎮 Init pygame
     pygame.init()
 
-    WIDTH, HEIGHT = 1280, 720
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    
+    screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
     pygame.display.set_caption("Fruit Catching Game")
 
     clock = pygame.time.Clock()
-    FPS = 60
+    FPS = constants.FPS
 
     # 🧩 Create systems
     systems = create_systems(screen)

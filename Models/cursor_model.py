@@ -12,5 +12,5 @@ class Cursor(BaseEntity):
         self.x = input_data.get("x", 0)
         self.y = input_data.get("y", 0)
 
-    def draw(self, surface):
+    def draw(self, screen):
         pass

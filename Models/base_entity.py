@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from Systems.Render.render_layer import RenderLayer
 
 
 class BaseEntity(ABC):
@@ -28,6 +29,7 @@ class BaseEntity(ABC):
         self.radius = radius
         self.image = image
         self.color = color
+        self.render_layer = RenderLayer.GAME_OBJECT
 
         # Life cycle
         self.active = True  # Indicates if the object is still falling

@@ -26,6 +26,8 @@ class Fruit(BaseEntity):
             return (255, 165, 0)
         elif self.fruit_type == FruitType.WATERMELON:
             return (0, 255, 0)
+        elif self.fruit_type == FruitType.BANANA:
+            return (255, 255, 0)
 
     def draw(self, screen):
         pass
