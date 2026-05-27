@@ -28,6 +28,17 @@ class GameManager:
         # Main game loop to update and render the game
         pass
 
-    def update(self):
+    def update(self, delta_time):
         # Update game logic, handle input, and manage game state
+        input_data = self.input_system.update()
+        self.gameplay_system.update(input_data, delta_time)
+        pass
+
+    def draw(self):
+        # Draw game objects and UI based on the current state
+        self.render_system.draw()
+        pass
+    
+    def handle_events(self, events):
+        # Handle user input and other events
         pass

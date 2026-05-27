@@ -1,12 +1,29 @@
-class BasketModel:
-    def __init__(self, position):
-        self.position = position
-        self.caught_fruits = 0
+from Models.base_entity import BaseEntity
+import pygame
 
-    def move(self, direction, delta_time):
-        # Move the basket based on user input and delta_time
-        pass
 
-    def catch_fruit(self, fruit):
-        # Check if the fruit is caught and update the score
+class Basket(BaseEntity):
+    def __init__(self):
+        super().__init__(width=100, height=50, color=(139, 69, 19))
+
+    def update(self, input_data):
+        if not self.active:
+            return
+
+        self.x = input_data.get("x", 0)
+        self.y = input_data.get("y", 0)
+
+    def draw(self, screen):
+        if not self.active:
+            return
+        pygame.draw.rect(
+            screen,
+            self.color,
+            (
+                self.x - self.width // 2,
+                self.y - self.height // 2,
+                self.width,
+                self.height,
+            ),
+        )
         pass
