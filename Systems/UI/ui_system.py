@@ -1,10 +1,11 @@
 from Core.game_state import Mode
 
 class UISystem:
-    def __init__(self, menu, pause_menu, game_over_menu):
+    def __init__(self, menu, pause_menu, game_over_menu, event_bus):
         self.menu = menu
         self.pause_menu = pause_menu
         self.game_over_menu = game_over_menu
+        self.event_bus = event_bus
 
     def update(self, cursor, state: Mode):
         """

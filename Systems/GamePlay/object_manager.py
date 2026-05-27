@@ -24,13 +24,16 @@ class ObjectManager:
     # ----------------------------
     # UPDATE
     # ----------------------------
-    def update(self, delta_time):
+    def update(self, delta_time, input_data=None):
         """
         Update all active objects
         """
         for obj in self.objects:
             if obj.active:
-                obj.update(delta_time)
+                if obj.tag == "BASKET" and input_data is not None:
+                    obj.update(input_data)  # Basket needs input data
+                else:
+                    obj.update(delta_time)
 
     # ----------------------------
     # DRAW

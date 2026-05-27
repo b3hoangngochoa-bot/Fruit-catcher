@@ -1,5 +1,7 @@
 import pygame
 from Models.basket_model import Basket
+from Core.event_type import EventType
+
 
 class GameplaySystem:
     def __init__(
@@ -9,6 +11,7 @@ class GameplaySystem:
         collision_system,
         gameplay_state,
         difficulty_system,
+        event_bus,
     ):
         # core systems
         self.spawner = spawner
@@ -16,7 +19,13 @@ class GameplaySystem:
             Basket()
         )  # Temporary, should be created by spawner and managed by object_manager
         self.object_manager = object_manager
+        self.object_manager.add_object(self.basket)  # Add basket to object manager
         self.collision_system = collision_system
+        # Event
+        self.event_bus = event_bus
+        self.event_bus.subscribe(EventType.FRUIT_HIT, self._on_fruit_hit)
+        self.event_bus.subscribe(EventType.BOMB_HIT, self._on_bomb_hit)
+        print(id(self.event_bus))
 
         # state
         self.gameplay_state = gameplay_state
@@ -35,13 +44,13 @@ class GameplaySystem:
         # print(
         #     f"GameplaySystem.update called with input: {input_data}, delta_time: {delta_time}"
         # )
-        self.basket.update(input_data)
-        # # 0. check pause
-        # if self.is_paused:
-        #     return
+        # self.basket.update(input_data)
+        # 0. check pause
+        if self.is_paused:
+            return
 
-        # # 1. update time
-        # self._update_time(delta_time)
+        # 1. update time
+        self._update_time(delta_time)
 
         # # 2. update difficulty (level scaling)
         # self._update_difficulty()
@@ -50,10 +59,10 @@ class GameplaySystem:
         self._handle_spawning(delta_time)
 
         # 4. update all entities
-        self._update_objects(delta_time)
+        self._update_objects(delta_time, input_data)
 
-        # # 5. collision handling
-        # self._handle_collision()
+        # 5. collision handling
+        self._handle_collision()
 
         # # 6. cleanup inactive objects
         # self._cleanup_objects()
@@ -69,6 +78,7 @@ class GameplaySystem:
         Increase elapsed time
         """
         self.gameplay_state.time_elapsed += delta_time
+        return self.gameplay_state.time_elapsed
 
     def _update_difficulty(self):
         """
@@ -89,11 +99,11 @@ class GameplaySystem:
     # ----------------------------
     # OBJECT UPDATE
     # ----------------------------
-    def _update_objects(self, delta_time):
+    def _update_objects(self, delta_time, input_data=None):
         """
         Update all active entities
         """
-        self.object_manager.update(delta_time)
+        self.object_manager.update(delta_time, input_data)
 
     # ----------------------------
     # COLLISION
@@ -102,26 +112,19 @@ class GameplaySystem:
         """
         Handle collision results and update state
         """
-        collision_events = self.collision_system.check(
-            self.object_manager.get_objects()
-        )
+        self.collision_system.check(self.object_manager.get_objects())
 
-        for event in collision_events:
-            self._resolve_collision(event)
+    def _on_fruit_hit(self, data):
+        fruit = data["fruit"]
+        print(f"Fruit hit: {fruit}")
+        self.gameplay_state.add_score(fruit.score_value)
+        fruit.destroy()
 
-    def _resolve_collision(self, event):
-        """
-        Apply collision result to gameplay state
-        """
-        if event["type"] == "FRUIT_HIT":
-            fruit = event["object"]
-            self.gameplay_state.add_score(fruit.score_value)
-            fruit.destroy()
-
-        elif event["type"] == "BOMB_HIT":
-            bomb = event["object"]
-            self.gameplay_state.lose_life(bomb.damage)
-            bomb.destroy()
+    def _on_bomb_hit(self, data):
+        bomb = data["bomb"]
+        print(f"Bomb hit: {bomb}")
+        self.gameplay_state.lose_life(bomb.damage)
+        bomb.destroy()
 
     # ----------------------------
     # CLEANUP

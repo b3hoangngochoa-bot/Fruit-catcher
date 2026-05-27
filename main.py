@@ -30,11 +30,15 @@ from Systems.UI.Menu.game_over_menu import GameOverMenu
 from Systems.Collision.collision_system import CollisionSystem
 from Systems.Render.render_system import RenderSystem
 from Systems.Audio.audio_system import AudioSystem
+from Core.observer import EventBus
 import Utils.constants as constants
 
 
 # 🎯 Factory tạo toàn bộ systems
 def create_systems(screen):
+    # Event bus
+    event_bus = EventBus()
+
     # Vision
     camera = Camera()
     detector = HandDetector()
@@ -47,10 +51,10 @@ def create_systems(screen):
     input_system = MouseInputSystemMock()  # Dùng mock để test UI trước
 
     # Collision
-    collision_system = CollisionSystem()
+    collision_system = CollisionSystem(event_bus)
 
     # Audio
-    audio_system = AudioSystem()
+    audio_system = AudioSystem(event_bus)
 
     # Gameplay
     spawner = Spawner()
@@ -58,14 +62,19 @@ def create_systems(screen):
     gameplay_state = GameplayState()
     difficulty_system = DifficultySystem()
     gameplay_system = GameplaySystem(
-        spawner, object_manager, collision_system, gameplay_state, difficulty_system
+        spawner,
+        object_manager,
+        collision_system,
+        gameplay_state,
+        difficulty_system,
+        event_bus,
     )
 
     # UI
     menu = Menu()
     pause_menu = PauseMenu()
     game_over_menu = GameOverMenu()
-    ui_system = UISystem(menu, pause_menu, game_over_menu)
+    ui_system = UISystem(menu, pause_menu, game_over_menu, event_bus)
 
     # Render
     render_system = RenderSystem(screen, gameplay_system)
@@ -114,10 +123,10 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-
             # optional: ESC → pause
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_ESCAPE:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    running = False
             # if game_manager.state == Mode.PLAYING:
             #     game_manager.state = Mode.PAUSE
             # elif game_manager.state == Mode.PAUSE:

@@ -13,6 +13,7 @@ class BaseEntity(ABC):
         vy=0,
         radius=None,
         image=None,
+        tag=None,
         color=(255, 255, 255),
     ):
         # Transform
@@ -33,6 +34,7 @@ class BaseEntity(ABC):
 
         # Life cycle
         self.active = True  # Indicates if the object is still falling
+        self.tag = tag
 
     # Update method to be called every frame
     def update(self, delta_time):

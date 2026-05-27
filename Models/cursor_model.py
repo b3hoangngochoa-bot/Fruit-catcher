@@ -4,7 +4,7 @@ import pygame
 
 class Cursor(BaseEntity):
     def __init__(self):
-        super().__init__(width=10, height=10, color=(255, 255, 255))
+        super().__init__(width=10, height=10, color=(255, 255, 255), tag="CURSOR")
 
     def update(self, input_data):
         if not self.active:
