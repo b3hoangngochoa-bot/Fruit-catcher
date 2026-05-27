@@ -2,12 +2,13 @@ from Models.fruit_model import Fruit
 from Models.bomb_model import Bomb
 from Models.fruit_type import FruitType
 from random import choice, randint
+from Utils import constants
 
 
 class Spawner:
     def __init__(self):
         self._spawn_timer = 0
-        self._spawn_delay = 2.0  # Spawn every 2 seconds (adjust as needed)
+        self._spawn_delay = 1.0  # Spawn every 1 second (adjust as needed)
         self.fruit_types = [
             FruitType.APPLE,
             FruitType.ORANGE,
@@ -32,7 +33,7 @@ class Spawner:
         if fruit_type is not None:
             # Spawn a fruit
             new_fruit = Fruit(
-                x=randint(50, 750),  # Random x position within screen bounds
+                x=randint(50, constants.SCREEN_WIDTH - 50),  # Random x position within screen bounds
                 y=-10,  # Start above the screen
                 vx=0,
                 vy=30,  # Random falling speed
@@ -43,7 +44,7 @@ class Spawner:
         else:
             # Spawn a bomb
             new_bomb = Bomb(
-                x=randint(50, 750),
+                x=randint(50, constants.SCREEN_WIDTH - 50),
                 y=-10,
                 vx=0,
                 vy=30,  # Bombs can fall faster than fruits

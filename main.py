@@ -15,6 +15,8 @@ from Mocks.input_system_mouse import MouseInputSystemMock
 
 # Gameplay
 from Systems.GamePlay.spawner import Spawner
+from Systems.GamePlay.gameplay_state import GameplayState
+from Systems.GamePlay.difficulty_system import DifficultySystem
 from Systems.GamePlay.object_manager import ObjectManager
 from Systems.GamePlay.gameplay_system import GameplaySystem
 
@@ -44,10 +46,20 @@ def create_systems(screen):
     # input_system = InputSystem(mapper, smoother)
     input_system = MouseInputSystemMock()  # Dùng mock để test UI trước
 
+    # Collision
+    collision_system = CollisionSystem()
+
+    # Audio
+    audio_system = AudioSystem()
+
     # Gameplay
     spawner = Spawner()
     object_manager = ObjectManager()
-    gameplay_system = GameplaySystem(spawner, object_manager)
+    gameplay_state = GameplayState()
+    difficulty_system = DifficultySystem()
+    gameplay_system = GameplaySystem(
+        spawner, object_manager, collision_system, gameplay_state, difficulty_system
+    )
 
     # UI
     menu = Menu()
@@ -55,10 +67,8 @@ def create_systems(screen):
     game_over_menu = GameOverMenu()
     ui_system = UISystem(menu, pause_menu, game_over_menu)
 
-    # Others
-    collision_system = CollisionSystem()
+    # Render
     render_system = RenderSystem(screen, gameplay_system)
-    audio_system = AudioSystem()
 
     return {
         "vision": vision_system,
@@ -75,7 +85,6 @@ def main():
     # 🎮 Init pygame
     pygame.init()
 
-    
     screen = pygame.display.set_mode((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT))
     pygame.display.set_caption("Fruit Catching Game")
 
