@@ -11,10 +11,11 @@ from Systems.Vision.vision_system import VisionSystem
 from Systems.Input.mapper import CoordinateMapper
 from Systems.Input.smoother import Smoother
 from Systems.Input.input_system import InputSystem
+from Mocks.input_system_mouse import MouseInputSystemMock
 
 # Gameplay
 from Systems.GamePlay.spawner import Spawner
-from Systems.GamePlay.gameplay_system import GamePlaySystem
+from Systems.GamePlay.gameplay_system import GameplaySystem
 
 # UI
 from Systems.UI.ui_system import UISystem
@@ -39,11 +40,12 @@ def create_systems(screen):
     # Input
     mapper = CoordinateMapper()
     smoother = Smoother()
-    input_system = InputSystem(mapper, smoother)
+    # input_system = InputSystem(mapper, smoother)
+    input_system = MouseInputSystemMock()  # Dùng mock để test UI trước
 
     # Gameplay
     spawner = Spawner()
-    gameplay_system = GamePlaySystem(spawner)
+    gameplay_system = GameplaySystem(spawner)
 
     # UI
     menu = Menu()
@@ -53,7 +55,7 @@ def create_systems(screen):
 
     # Others
     collision_system = CollisionSystem()
-    render_system = RenderSystem(screen)
+    render_system = RenderSystem(screen, gameplay_system)
     audio_system = AudioSystem()
 
     return {
@@ -96,6 +98,7 @@ def main():
 
     # 🔄 MAIN LOOP
     while running:
+        delta_time = clock.tick(FPS) / 1000.0  # Convert ms to seconds
         # 1. Handle system-level events (OS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -110,13 +113,15 @@ def main():
             #     game_manager.state = Mode.PLAYING
 
         # 2. Update game logic
-        # game_manager.update()
+        game_manager.update(delta_time)
 
         # 3. Update display
-        pygame.display.flip()
+        game_manager.draw()
 
         # 4. FPS control
         clock.tick(FPS)
+
+        pygame.display.flip()
 
     pygame.quit()
 

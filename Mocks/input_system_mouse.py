@@ -1,15 +1,16 @@
+import pygame
+
+
 class MouseInputSystemMock:
     def __init__(self):
-        self.mouse_pos = (0, 0)
-        self.mouse_buttons = (False, False, False)  # left, middle, right
+        pass
 
     def update(self):
-        # Simulate mouse movement and button presses
-        self.mouse_pos = (100, 150)  # Example position
-        self.mouse_buttons = (True, False, False)  # Simulate left button pressed
+        """
+        Mock input từ mouse
+        """
+        mouse_x, mouse_y = pygame.mouse.get_pos()
 
-    def get_mouse_position(self):
-        return self.mouse_pos
+        input_data = {"x": mouse_x, "y": mouse_y, "gesture": None}
 
-    def get_mouse_buttons(self):
-        return self.mouse_buttons
+        return input_data

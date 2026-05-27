@@ -1,4 +1,6 @@
 from Models.base_entity import BaseEntity
+import pygame
+
 
 class Basket(BaseEntity):
     def __init__(self):
@@ -12,4 +14,16 @@ class Basket(BaseEntity):
         self.y = input_data.get("y", 0)
 
     def draw(self, screen):
+        if not self.active:
+            return
+        pygame.draw.rect(
+            screen,
+            self.color,
+            (
+                self.x - self.width // 2,
+                self.y - self.height // 2,
+                self.width,
+                self.height,
+            ),
+        )
         pass
