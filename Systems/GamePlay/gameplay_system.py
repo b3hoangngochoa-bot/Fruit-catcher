@@ -1,7 +1,15 @@
 class GamePlaySystem:
-    def __init__(self):
-        pass
+    def __init__(self, spawner):
+        self.spawner = spawner
+        self.fruits = []
+        self.bombs = []
 
-    def update(self, delta_time):
-        # Update game logic, such as moving fruits and checking for collisions
-        pass
+    def update(self, basket):
+        # update objects
+        # spawn new objects
+        # return event if needed
+        return None
+
+    def reset(self):
+        self.fruits.clear()
+        self.bombs.clear()
