@@ -40,6 +40,7 @@ class Spawner:
                 fruit_type=fruit_type,
             )
             object_manager.add_object(new_fruit)
+            # print(f"Spawned a {new_fruit.tag} at x={new_fruit.x}, y={new_fruit.y}")
             return new_fruit
         else:
             # Spawn a bomb
@@ -50,6 +51,7 @@ class Spawner:
                 vy=30,  # Bombs can fall faster than fruits
             )
             object_manager.add_object(new_bomb)
+            # print(f"Spawned a {new_bomb.tag} at x={new_bomb.x}, y={new_bomb.y}")
             return new_bomb
 
     def _random_spawn(self, object_manager):
@@ -57,9 +59,9 @@ class Spawner:
         # Randomly decide to spawn a fruit or a bomb
         random_value = randint(1, 100)
         if random_value <= 80:  # 80% chance to spawn a fruit
-            print(f"Spawning a fruit with chance = {random_value}")
+            # print(f"Spawning a fruit with chance = {random_value}")
             fruit_type = choice(self.fruit_types)
             return self.spawn(object_manager, fruit_type)
         else:  # 20% chance to spawn a bomb
-            print(f"Spawning a bomb with chance = {random_value}")
+            # print(f"Spawning a bomb with chance = {random_value}")
             return self.spawn(object_manager, None)

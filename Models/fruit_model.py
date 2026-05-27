@@ -5,7 +5,7 @@ import pygame
 
 class Fruit(BaseEntity):
     def __init__(self, x, y, vx, vy, fruit_type: FruitType):
-        super().__init__(x, y, 40, 40, vx, vy)
+        super().__init__(x, y, 40, 40, vx, vy, tag="FRUIT")
         self.fruit_type = fruit_type
         self.score_value = 1  # Default score value, can be adjusted based on fruit type
 

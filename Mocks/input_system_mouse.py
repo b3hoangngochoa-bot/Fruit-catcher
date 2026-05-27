@@ -11,6 +11,11 @@ class MouseInputSystemMock:
         """
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
-        input_data = {"x": mouse_x, "y": mouse_y, "gesture": None}
+        input_data = {
+            "x": mouse_x,
+            "y": mouse_y,
+            "is_click": pygame.mouse.get_pressed()[0],
+            "gesture": None  # future: vision system
+        }
 
         return input_data
