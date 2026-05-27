@@ -1,4 +1,5 @@
 from Models.base_entity import BaseEntity
+import pygame
 
 
 class Cursor(BaseEntity):
@@ -13,4 +14,7 @@ class Cursor(BaseEntity):
         self.y = input_data.get("y", 0)
 
     def draw(self, screen):
+        if not self.active:
+            return
+        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.width)
         pass

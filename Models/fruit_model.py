@@ -1,5 +1,6 @@
 from Models.base_entity import BaseEntity
 from Models.fruit_type import FruitType
+import pygame
 
 
 class Fruit(BaseEntity):
@@ -30,4 +31,10 @@ class Fruit(BaseEntity):
             return (255, 255, 0)
 
     def draw(self, screen):
+        if not self.active:
+            return
+        # For simplicity, draw a colored circle representing the fruit
+        pygame.draw.circle(
+            screen, self.color, (int(self.x), int(self.y)), self.width // 2
+        )
         pass
