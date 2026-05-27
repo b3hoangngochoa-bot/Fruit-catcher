@@ -6,9 +6,9 @@ class GameplaySystem:
         self,
         spawner,
         object_manager,
-        # collision_system,
-        # gameplay_state,
-        # difficulty_system,
+        collision_system,
+        gameplay_state,
+        difficulty_system,
     ):
         # core systems
         self.spawner = spawner
@@ -16,14 +16,14 @@ class GameplaySystem:
             Basket()
         )  # Temporary, should be created by spawner and managed by object_manager
         self.object_manager = object_manager
-        # self.collision_system = collision_system
+        self.collision_system = collision_system
 
-        # # state
-        # self.gameplay_state = gameplay_state
-        # self.difficulty_system = difficulty_system
+        # state
+        self.gameplay_state = gameplay_state
+        self.difficulty_system = difficulty_system
 
-        # # control
-        # self.is_paused = False
+        # control
+        self.is_paused = False
 
     # ----------------------------
     # UPDATE LOOP
