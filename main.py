@@ -60,7 +60,7 @@ def create_systems(screen):
     spawner = Spawner()
     object_manager = ObjectManager()
     gameplay_state = GameplayState()
-    difficulty_system = DifficultySystem()
+    difficulty_system = DifficultySystem(event_bus)
     gameplay_system = GameplaySystem(
         spawner,
         object_manager,

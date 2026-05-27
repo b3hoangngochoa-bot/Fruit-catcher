@@ -40,7 +40,7 @@ class BaseEntity(ABC):
     def update(self, delta_time):
         if not self.active:
             return
-        
+
         self.x += self.velocity_x * delta_time
         self.y += self.velocity_y * delta_time
         # Update the object's position based on its speed and the elapsed time
@@ -50,12 +50,16 @@ class BaseEntity(ABC):
     def destroy(self):
         # Mark the object as inactive when it is caught or hits the ground
         self.active = False
-    
+
     # Collision detection method
     def get_rect(self):
         # Return the bounding rectangle for collision detection
         return (self.x, self.y, self.width, self.height)
-    
+
+    def is_out_of_screen(self, screen_height):
+        # Check if the object has fallen below the bottom of the screen
+        return self.y > screen_height
+
     # Render method to be implemented by subclasses
     @abstractmethod
     def draw(self, screen):

@@ -23,10 +23,10 @@ class Spawner:
             return
         self._spawn_timer = 0
 
-        self._random_spawn(object_manager)
+        self._random_spawn(object_manager, difficulty_multiplier)
         pass
 
-    def spawn(self, object_manager, fruit_type=None):
+    def spawn(self, object_manager, fruit_type=None, difficulty_multiplier=0):
         """
         Spawn a new fruit or bomb and add it to the object manager
         """
@@ -36,7 +36,7 @@ class Spawner:
                 x=randint(50, constants.SCREEN_WIDTH - 50),  # Random x position within screen bounds
                 y=-10,  # Start above the screen
                 vx=0,
-                vy=30,  # Random falling speed
+                vy=30 * difficulty_multiplier,  # Random falling speed
                 fruit_type=fruit_type,
             )
             object_manager.add_object(new_fruit)
@@ -48,20 +48,20 @@ class Spawner:
                 x=randint(50, constants.SCREEN_WIDTH - 50),
                 y=-10,
                 vx=0,
-                vy=30,  # Bombs can fall faster than fruits
+                vy=30 * difficulty_multiplier,  # Bombs can fall faster than fruits
             )
             object_manager.add_object(new_bomb)
             # print(f"Spawned a {new_bomb.tag} at x={new_bomb.x}, y={new_bomb.y}")
             return new_bomb
 
-    def _random_spawn(self, object_manager):
+    def _random_spawn(self, object_manager, difficulty_multiplier=0):
 
         # Randomly decide to spawn a fruit or a bomb
         random_value = randint(1, 100)
         if random_value <= 80:  # 80% chance to spawn a fruit
             # print(f"Spawning a fruit with chance = {random_value}")
             fruit_type = choice(self.fruit_types)
-            return self.spawn(object_manager, fruit_type)
+            return self.spawn(object_manager, fruit_type, difficulty_multiplier)
         else:  # 20% chance to spawn a bomb
             # print(f"Spawning a bomb with chance = {random_value}")
-            return self.spawn(object_manager, None)
+            return self.spawn(object_manager, None, difficulty_multiplier)

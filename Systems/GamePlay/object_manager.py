@@ -13,6 +13,7 @@ class ObjectManager:
         Add new entity to the game
         """
         self.objects.append(obj)
+        # print(f"Count after adding: {len(self.objects)}")
 
     def remove_object(self, obj):
         """
@@ -24,7 +25,7 @@ class ObjectManager:
     # ----------------------------
     # UPDATE
     # ----------------------------
-    def update(self, delta_time, input_data=None):
+    def update(self, delta_time, input_data=None, screen_height=None):
         """
         Update all active objects
         """
@@ -34,6 +35,10 @@ class ObjectManager:
                     obj.update(input_data)  # Basket needs input data
                 else:
                     obj.update(delta_time)
+            
+            if obj.is_out_of_screen(screen_height) and screen_height is not None:
+                obj.destroy()  # Mark as inactive if it falls below the screen
+        self.cleanup()  # Clean up inactive objects after update
 
     # ----------------------------
     # DRAW
@@ -53,7 +58,7 @@ class ObjectManager:
         """
         Remove inactive objects (despawn)
         """
-        self.objects = [obj for obj in self.objects if obj.active]
+        self.objects[:] = [obj for obj in self.objects if obj.active]
 
     # ----------------------------
     # GETTERS
