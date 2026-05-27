@@ -24,24 +24,24 @@ class ObjectManager:
     # ----------------------------
     # UPDATE
     # ----------------------------
-    def update(self):
+    def update(self, delta_time):
         """
         Update all active objects
         """
         for obj in self.objects:
             if obj.active:
-                obj.update()
+                obj.update(delta_time)
 
     # ----------------------------
     # DRAW
     # ----------------------------
-    def draw(self, surface):
+    def draw(self, screen):
         """
         Draw all active objects (render_system có thể override layer)
         """
         for obj in self.objects:
             if obj.active:
-                obj.draw(surface)
+                obj.draw(screen)
 
     # ----------------------------
     # CLEANUP

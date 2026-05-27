@@ -26,4 +26,5 @@ class Basket(BaseEntity):
                 self.height,
             ),
         )
+        # pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.height // 2)
         pass

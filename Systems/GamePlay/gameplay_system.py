@@ -5,15 +5,17 @@ class GameplaySystem:
     def __init__(
         self,
         spawner,
-        # object_manager,
+        object_manager,
         # collision_system,
         # gameplay_state,
         # difficulty_system,
     ):
         # core systems
         self.spawner = spawner
-        self.basket = Basket()  # Temporary, should be created by spawner and managed by object_manager
-        # self.object_manager = object_manager
+        self.basket = (
+            Basket()
+        )  # Temporary, should be created by spawner and managed by object_manager
+        self.object_manager = object_manager
         # self.collision_system = collision_system
 
         # # state
@@ -30,9 +32,9 @@ class GameplaySystem:
         """
         Main gameplay update loop
         """
-        print(
-            f"GameplaySystem.update called with input: {input_data}, delta_time: {delta_time}"
-        )
+        # print(
+        #     f"GameplaySystem.update called with input: {input_data}, delta_time: {delta_time}"
+        # )
         self.basket.update(input_data)
         # # 0. check pause
         # if self.is_paused:
@@ -44,11 +46,11 @@ class GameplaySystem:
         # # 2. update difficulty (level scaling)
         # self._update_difficulty()
 
-        # # 3. spawn objects
-        # self._handle_spawning()
+        # 3. spawn objects
+        self._handle_spawning(delta_time)
 
-        # # 4. update all entities
-        # self._update_objects()
+        # 4. update all entities
+        self._update_objects(delta_time)
 
         # # 5. collision handling
         # self._handle_collision()
@@ -78,23 +80,20 @@ class GameplaySystem:
     # ----------------------------
     # SPAWNING
     # ----------------------------
-    def _handle_spawning(self):
+    def _handle_spawning(self, delta_time):
         """
         Spawn fruit / bomb based on difficulty
         """
-        new_objects = self.spawner.update(self.gameplay_state.level)
-
-        for obj in new_objects:
-            self.object_manager.add_object(obj)
+        self.spawner.update(self.object_manager, delta_time)
 
     # ----------------------------
     # OBJECT UPDATE
     # ----------------------------
-    def _update_objects(self):
+    def _update_objects(self, delta_time):
         """
         Update all active entities
         """
-        self.object_manager.update()
+        self.object_manager.update(delta_time)
 
     # ----------------------------
     # COLLISION
@@ -163,8 +162,8 @@ class GameplaySystem:
         Draw gameplay world + HUD
         """
 
-        # # 1. draw game objects
-        # self.object_manager.draw(screen)
+        # 1. draw game objects
+        self.object_manager.draw(screen)
 
         # # 2. draw HUD
         # self._draw_hud(screen)

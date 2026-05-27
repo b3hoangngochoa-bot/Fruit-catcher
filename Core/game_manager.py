@@ -1,5 +1,6 @@
 from Core.game_state import Mode
 
+
 class GameManager:
     def __init__(
         self,
@@ -38,7 +39,7 @@ class GameManager:
         # Draw game objects and UI based on the current state
         self.render_system.draw()
         pass
-    
+
     def handle_events(self, events):
         # Handle user input and other events
         pass

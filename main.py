@@ -15,6 +15,7 @@ from Mocks.input_system_mouse import MouseInputSystemMock
 
 # Gameplay
 from Systems.GamePlay.spawner import Spawner
+from Systems.GamePlay.object_manager import ObjectManager
 from Systems.GamePlay.gameplay_system import GameplaySystem
 
 # UI
@@ -45,7 +46,8 @@ def create_systems(screen):
 
     # Gameplay
     spawner = Spawner()
-    gameplay_system = GameplaySystem(spawner)
+    object_manager = ObjectManager()
+    gameplay_system = GameplaySystem(spawner, object_manager)
 
     # UI
     menu = Menu()
