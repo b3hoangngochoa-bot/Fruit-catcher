@@ -1,4 +1,3 @@
-from PIL.DdsImagePlugin import item
 import pygame
 
 
@@ -39,6 +38,15 @@ class RenderSystem:
             self._draw_item(item)
 
     def _draw_item(self, item):
+
+        # 🎯 background full screen
+        if item.get("full_screen"):
+            if item.get("image"):
+                self.screen.blit(item["image"], (0, 0))
+            else:
+                self.screen.fill(item["color"])
+            return
+        
         # ưu tiên image
         if item.get("image"):
             self.screen.blit(item["image"], (item["x"], item["y"]))

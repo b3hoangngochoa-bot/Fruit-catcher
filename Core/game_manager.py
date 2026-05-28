@@ -1,5 +1,6 @@
 from Core.event_type import EventType
 from Core.game_state import Mode
+from Models.cursor_model import Cursor
 
 
 class GameManager:
@@ -28,8 +29,11 @@ class GameManager:
         self.event_bus.subscribe(EventType.GAME_PAUSE, self._on_pause)
         self.event_bus.subscribe(EventType.GAME_RESUME, self._on_resume)
         self.event_bus.subscribe(EventType.GAME_OVER, self._on_game_over)
+        self.event_bus.subscribe(EventType.GO_TO_MENU, self._on_go_to_menu)
+        self.event_bus.subscribe(EventType.GAME_RESTART, self._on_game_restart)
 
         self.state = Mode.PLAYING  # default state
+        self.cursor = Cursor()
 
     def game_loop(self):
         # Main game loop to update and render the game
@@ -65,12 +69,12 @@ class GameManager:
             render_queue += self.gameplay_system.get_render_data()
             self.gameplay_system.draw_hud(self.render_system.screen)
 
-        # render_queue += self.ui_system.get_render_data(self.state)
+        render_queue += self.ui_system.get_render_data(self.state)
 
-        # render_queue.append(self.cursor.get_render_data())
+        render_queue.append(self.cursor.get_render_data())
 
         self.render_system.draw(render_queue)
-    
+
     def _on_game_start(self, data):
         self.state = Mode.PLAYING
 
@@ -81,6 +85,11 @@ class GameManager:
         self.state = Mode.PLAYING
 
     def _on_game_over(self, data):
+        self.gameplay_system.pause()
         self.state = Mode.GAME_OVER
 
-
+    def _on_go_to_menu(self, data):
+        self.state = Mode.MENU
+    
+    def _on_game_restart(self, data):
+        pass

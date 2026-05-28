@@ -12,19 +12,15 @@ class MenuBase(ABC):
         """
         pass
 
-    def update(self, cursor):
-        """
-        Update all elements
-        """
+    def update(self, event_bus, cursor):
         for element in self.elements:
-            event = element.update(cursor)
-            if event:
-                return event
-        return None
+            element.update(event_bus, cursor)
 
-    def draw(self, screen):
-        """
-        Draw all elements
-        """
+    def get_render_data(self):
+        render_data = []
+
         for element in self.elements:
-            element.draw(screen)
+            rd = element.get_render_data()
+            if rd:
+                render_data.append(rd)
+        return render_data

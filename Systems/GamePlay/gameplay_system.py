@@ -67,8 +67,8 @@ class GameplaySystem:
         # 6. cleanup inactive objects
         self._cleanup_objects()
 
-        # # 7. check game over
-        # self._check_game_over()
+        # 7. check game over
+        self._check_game_over()
 
     # ----------------------------
     # TIME & LEVEL
@@ -152,12 +152,13 @@ class GameplaySystem:
         Check if game over condition met
         """
         if self.gameplay_state.is_game_over():
-            self._on_game_over()
+            self._handle_game_over()
 
-    def _on_game_over(self):
+    def _handle_game_over(self):
         """
         Handle game over event
         """
+        self.event_bus.emit(EventType.GAME_OVER, {})
         pass
 
     def pause(self):
