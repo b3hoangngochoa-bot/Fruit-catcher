@@ -1,21 +1,35 @@
 import pygame
+import Utils.constants as constants
 
 
 class MouseInputSystemMock:
+    """
+    Mock InputSystem dùng chuột thay vì Vision/tay.
+    Output cùng format với InputSystem thật để dễ swap.
+    """
+
+    BASKET_RADIUS = 50
+
     def __init__(self):
         pass
 
-    def update(self):
+    def update(self, hand_data=None) -> dict:
         """
-        Mock input từ mouse
+        Lấy vị trí chuột và trả về input_data cùng format với InputSystem.
+        Tham số hand_data bị bỏ qua (chỉ để tương thích interface).
         """
         mouse_x, mouse_y = pygame.mouse.get_pos()
+        click = pygame.mouse.get_pressed()[0]
 
-        input_data = {
-            "x": mouse_x,
-            "y": mouse_y,
-            "is_click": pygame.mouse.get_pressed()[0],
-            "gesture": None  # future: vision system
+        return {
+            "cursor": {
+                "x": mouse_x,
+                "y": mouse_y,
+                "click": click,
+            },
+            "basket": {
+                "x": mouse_x,
+                "y": mouse_y,
+                "radius": self.BASKET_RADIUS,
+            },
         }
-
-        return input_data

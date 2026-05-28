@@ -47,8 +47,8 @@ def create_systems(screen):
     # Input
     mapper = CoordinateMapper()
     smoother = Smoother()
-    # input_system = InputSystem(mapper, smoother)
-    input_system = MouseInputSystemMock()  # Dùng mock để test UI trước
+    input_system = InputSystem(mapper, smoother, event_bus)  # Dùng Vision thật
+    # input_system = MouseInputSystemMock()  # Mock dùng chuột để test UI
 
     # Collision
     collision_system = CollisionSystem(event_bus)
@@ -103,6 +103,9 @@ def main():
     # 🧩 Create systems
     systems = create_systems(screen)
 
+    # 🎥 Khởi động camera
+    systems["vision"].start()
+
     # 🧠 Inject vào GameManager
     game_manager = GameManager(
         vision_system=systems["vision"],
@@ -132,7 +135,10 @@ def main():
             # elif game_manager.state == Mode.PAUSE:
             #     game_manager.state = Mode.PLAYING
 
-        # 2. Update game logic
+        # 2. Update Vision (camera + hand detect)
+        systems["vision"].update()
+
+        # 3. Update game logic
         game_manager.update(delta_time)
 
         # 3. Update display
@@ -143,6 +149,8 @@ def main():
 
         pygame.display.flip()
 
+    # 🎥 Giải phóng camera
+    systems["vision"].release()
     pygame.quit()
 
 
