@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class RenderLayer(Enum):
+class RenderLayer(IntEnum):
     BACKGROUND = 0
     GAME_OBJECT = 1
     EFFECT = 2

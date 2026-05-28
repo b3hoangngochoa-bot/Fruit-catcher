@@ -37,13 +37,13 @@ class GameManager:
 
     def update(self, delta_time):
         # 1. Lấy hand_data từ VisionSystem (đã được update() ở main loop)
-        hand_data = self.vision_system.get_hand_data()
+        # hand_data = self.vision_system.get_hand_data()
 
         # 2. Chuyển hand_data → input_data (pixel màn hình, đã làm mượt)
-        input_data = self.input_system.update(hand_data)
+        # input_data = self.input_system.update(hand_data)
 
         # 1. input
-        # input_data = self.input_system.update()
+        input_data = self.input_system.update()
 
         # 2. state-based update
         if self.state == Mode.MENU:
@@ -59,8 +59,17 @@ class GameManager:
             self.ui_system.update(input_data, self.state)
 
     def draw(self):
-        # Draw game objects and UI based on the current state
-        self.render_system.draw()
+        render_queue = []
+
+        if self.state == Mode.PLAYING:
+            render_queue += self.gameplay_system.get_render_data()
+            self.gameplay_system.draw_hud(self.render_system.screen)
+
+        # render_queue += self.ui_system.get_render_data(self.state)
+
+        # render_queue.append(self.cursor.get_render_data())
+
+        self.render_system.draw(render_queue)
     
     def _on_game_start(self, data):
         self.state = Mode.PLAYING
