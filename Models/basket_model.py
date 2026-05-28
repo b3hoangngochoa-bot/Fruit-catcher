@@ -10,8 +10,9 @@ class Basket(BaseEntity):
         if not self.active:
             return
 
-        self.x = input_data["x"]
-        self.y = input_data["y"]
+        basket = input_data.get("basket", {})
+        self.x = basket.get("x") or self.x
+        self.y = basket.get("y") or self.y
 
     def draw(self, screen):
         if not self.active:

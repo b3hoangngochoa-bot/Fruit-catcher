@@ -36,24 +36,10 @@ class GameManager:
         pass
 
     def update(self, delta_time):
-    # 1. input
+        # Update game logic, handle input, and manage game state
         input_data = self.input_system.update()
-
-    # 2. state-based update
-        if self.state == Mode.MENU:
-            self.ui_system.update(input_data, self.state)
-
-        elif self.state == Mode.PLAYING:
-            self.gameplay_system.update(input_data, delta_time)
-            self.collision_system.check(
-            self.gameplay_system.object_manager.get_objects()
-            )
-
-        elif self.state == Mode.PAUSE:
-            self.ui_system.update(input_data, self.state)
-
-        elif self.state == Mode.GAME_OVER:
-            self.ui_system.update(input_data, self.state)
+        self.gameplay_system.update(input_data, delta_time)
+        pass
 
     def draw(self):
         # Draw game objects and UI based on the current state
