@@ -13,25 +13,27 @@ class UISystem:
         Return Event or None
         """
         if state.name == "MENU":
-            return self.menu.update(cursor)
+            return self.menu.update(self.event_bus, cursor)
 
         elif state.name == "PAUSE":
-            return self.pause_menu.update(cursor)
+            return self.pause_menu.update(self.event_bus, cursor)
 
         elif state.name == "GAME_OVER":
-            return self.game_over_menu.update(cursor)
+            return self.game_over_menu.update(self.event_bus, cursor)
 
         return None
 
-    def draw(self, screen, state: Mode):
-        """
-        Route draw based on state
-        """
-        if state.name == "MENU":
-            self.menu.draw(screen)
+    def get_render_data(self, state):
+        ui = self._get_current_ui(state)
+        if ui:
+            return ui.get_render_data()
+        return []
 
-        elif state.name == "PAUSE":
-            self.pause_menu.draw(screen)
-
-        elif state.name == "GAME_OVER":
-            self.game_over_menu.draw(screen)
+    def _get_current_ui(self, state):
+        if state == Mode.MENU:
+            return self.menu
+        elif state == Mode.PAUSE:
+            return self.pause_menu
+        elif state == Mode.GAME_OVER:
+            return self.game_over_menu
+        return None

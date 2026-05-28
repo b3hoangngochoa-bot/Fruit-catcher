@@ -1,3 +1,4 @@
+from cv2 import data
 import pygame
 from Models.basket_model import Basket
 from Core.event_type import EventType
@@ -66,8 +67,8 @@ class GameplaySystem:
         # 6. cleanup inactive objects
         self._cleanup_objects()
 
-        # # 7. check game over
-        # self._check_game_over()
+        # 7. check game over
+        self._check_game_over()
 
     # ----------------------------
     # TIME & LEVEL
@@ -151,12 +152,13 @@ class GameplaySystem:
         Check if game over condition met
         """
         if self.gameplay_state.is_game_over():
-            self._on_game_over()
+            self._handle_game_over()
 
-    def _on_game_over(self):
+    def _handle_game_over(self):
         """
         Handle game over event
         """
+        self.event_bus.emit(EventType.GAME_OVER, {})
         pass
 
     def pause(self):
@@ -166,22 +168,21 @@ class GameplaySystem:
         self.is_paused = False
 
     # ----------------------------
-    # DRAW
+    # Render data
     # ----------------------------
-    def draw(self, screen):
-        """
-        Draw gameplay world + HUD
-        """
 
-        # 1. draw game objects
-        self.object_manager.draw(screen)
+    def get_render_data(self):
+        data = []
 
-        # 2. draw HUD
-        self._draw_hud(screen)
-        # 3. draw basket (on top of everything)
-        # self.basket.draw(screen)
+        for obj in self.object_manager.get_objects():
+            rd = obj.get_render_data()
+            if rd:
+                data.append(rd)
 
-    def _draw_hud(self, screen):
+        return data
+
+    #
+    def draw_hud(self, screen):
         """
         Draw score, life, level, time
         """

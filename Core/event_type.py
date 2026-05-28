@@ -3,10 +3,12 @@ class EventType:
     # GAME STATE
     # ----------------------------
     GAME_START = "GAME_START"
+    GAME_RESTART = "GAME_RESTART"
     GAME_PAUSE = "GAME_PAUSE"
     GAME_RESUME = "GAME_RESUME"
     GAME_OVER = "GAME_OVER"
     GO_TO_MENU = "GO_TO_MENU"
+    QUIT_GAME = "QUIT_GAME"
 
     # ----------------------------
     # UI

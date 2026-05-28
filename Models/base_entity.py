@@ -11,7 +11,6 @@ class BaseEntity(ABC):
         height=0,
         vx=0,
         vy=0,
-        radius=None,
         image=None,
         tag=None,
         color=(255, 255, 255),
@@ -27,14 +26,23 @@ class BaseEntity(ABC):
         self.velocity_y = vy
 
         # Render
-        self.radius = radius
         self.image = image
         self.color = color
+
+        # Lifecycle
+        self.active = True  # Indicates if the object is still falling
+
+        # Identify
+        self.tag = tag
+
+        # Default render layer for game objects, can be overridden by subclasses
         self.render_layer = RenderLayer.GAME_OBJECT
 
-        # Life cycle
-        self.active = True  # Indicates if the object is still falling
-        self.tag = tag
+    # Render method to be implemented by subclasses
+    @abstractmethod
+    def get_render_data(self):
+        # Abstract method to return data for rendering the entity on the screen
+        pass
 
     # Update method to be called every frame
     def update(self, delta_time):
@@ -43,25 +51,12 @@ class BaseEntity(ABC):
 
         self.x += self.velocity_x * delta_time
         self.y += self.velocity_y * delta_time
-        # Update the object's position based on its speed and the elapsed time
-        pass
 
-    # Life cycle method
+    # Lifecycle method
     def destroy(self):
         # Mark the object as inactive when it is caught or hits the ground
         self.active = False
 
-    # Collision detection method
-    def get_rect(self):
-        # Return the bounding rectangle for collision detection
-        return (self.x, self.y, self.width, self.height)
-
     def is_out_of_screen(self, screen_height):
         # Check if the object has fallen below the bottom of the screen
         return self.y > screen_height
-
-    # Render method to be implemented by subclasses
-    @abstractmethod
-    def draw(self, screen):
-        # Abstract method to draw the entity on the screen
-        pass
