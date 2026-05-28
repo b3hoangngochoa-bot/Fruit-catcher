@@ -24,7 +24,6 @@ class Spawner:
         self._spawn_timer = 0
 
         self._random_spawn(object_manager, difficulty_multiplier)
-        pass
 
     def spawn(self, object_manager, fruit_type=None, difficulty_multiplier=0):
         """

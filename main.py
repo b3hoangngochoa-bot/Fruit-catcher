@@ -87,6 +87,7 @@ def create_systems(screen):
         "collision": collision_system,
         "render": render_system,
         "audio": audio_system,
+        "event_bus": event_bus,
     }
 
 
@@ -112,6 +113,7 @@ def main():
         collision_system=systems["collision"],
         render_system=systems["render"],
         audio_system=systems["audio"],
+        event_bus=systems["event_bus"],
     )
 
     running = True
