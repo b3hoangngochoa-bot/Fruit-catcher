@@ -11,8 +11,8 @@ class Cursor(BaseEntity):
             return
 
         cursor = input_data.get("cursor", {})
-        self.x = cursor.get("x") or 0
-        self.y = cursor.get("y") or 0
+        self.x = cursor.get("x") or self.x
+        self.y = cursor.get("y") or self.y
 
     def draw(self, screen):
         if not self.active:
