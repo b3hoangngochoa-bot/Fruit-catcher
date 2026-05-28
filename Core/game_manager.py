@@ -30,10 +30,14 @@ class GameManager:
         pass
 
     def update(self, delta_time):
-        # Update game logic, handle input, and manage game state
-        input_data = self.input_system.update()
+        # Lấy hand_data từ VisionSystem (đã được update() ở main loop)
+        hand_data = self.vision_system.get_hand_data()
+
+        # Chuyển hand_data → input_data (pixel màn hình, đã làm mượt)
+        input_data = self.input_system.update(hand_data)
+
+        # Cập nhật game logic
         self.gameplay_system.update(input_data, delta_time)
-        pass
 
     def draw(self):
         # Draw game objects and UI based on the current state

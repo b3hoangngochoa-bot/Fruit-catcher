@@ -36,7 +36,7 @@ class ObjectManager:
                 else:
                     obj.update(delta_time)
             
-            if obj.is_out_of_screen(screen_height) and screen_height is not None:
+            if screen_height is not None and obj.is_out_of_screen(screen_height):
                 obj.destroy()  # Mark as inactive if it falls below the screen
         self.cleanup()  # Clean up inactive objects after update
 
