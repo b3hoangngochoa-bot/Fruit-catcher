@@ -4,7 +4,6 @@ from Core.event_type import EventType
 class CollisionSystem:
     def __init__(self, event_bus):
         self.event_bus = event_bus
-        print(id(self.event_bus))
 
     def check(self, objects):
         """
@@ -38,15 +37,24 @@ class CollisionSystem:
     # ----------------------------
     # COLLISION CHECK
     # ----------------------------
-    def _is_colliding(self, a, b):
+    def _is_colliding(self, basket, obj):
         """
         Simple AABB collision
         """
+        left_basket = basket.x - basket.width // 2
+        right_basket = basket.x + basket.width // 2
+        top_basket = basket.y - basket.height // 2
+        bottom_basket = basket.y + basket.height // 2
+
+        left_obj = obj.x
+        right_obj = obj.x + obj.width
+        top_obj = obj.y
+        bottom_obj = obj.y + obj.height
         return (
-            a.x < b.x + b.width
-            and a.x + a.width > b.x
-            and a.y < b.y + b.height
-            and a.y + a.height > b.y
+            left_obj < right_basket
+            and right_obj > left_basket
+            and top_obj < bottom_basket
+            and bottom_obj > top_basket
         )
 
     # ----------------------------
@@ -54,7 +62,9 @@ class CollisionSystem:
     # ----------------------------
     def _handle_collision(self, obj):
         if obj.tag == "FRUIT":
-            self.event_bus.emit(EventType.FRUIT_HIT, {"fruit": obj, "name": "fruit_hit"})
+            self.event_bus.emit(
+                EventType.FRUIT_HIT, {"fruit": obj, "name": "fruit_hit"}
+            )
 
         elif obj.tag == "BOMB":
             self.event_bus.emit(EventType.BOMB_HIT, {"bomb": obj, "name": "bomb_hit"})

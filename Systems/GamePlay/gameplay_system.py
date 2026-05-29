@@ -2,6 +2,10 @@ from Models.basket_model import Basket
 from Core.event_type import EventType
 from Utils.constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from Systems.UI.Elements.label import Label
+from Systems.UI.Elements.background import Background
+from Utils import load_asset
+
+load_ui_image = load_asset.load_ui_image
 
 
 class GameplaySystem:
@@ -16,16 +20,17 @@ class GameplaySystem:
     ):
         # core systems
         self.spawner = spawner
-    
         self.object_manager = object_manager
-        self.object_manager.add_object(self.spawner.basket)  # Add basket to object manager
+        self.object_manager.add_object(
+            self.spawner.basket
+        )  # Add basket to object manager
         self.collision_system = collision_system
+
         # Event
         self.event_bus = event_bus
         self.event_bus.subscribe(EventType.FRUIT_HIT, self._on_fruit_hit)
         self.event_bus.subscribe(EventType.BOMB_HIT, self._on_bomb_hit)
         self.event_bus.subscribe(EventType.LEVEL_UP, self._on_level_up)
-        print(id(self.event_bus))
 
         # state
         self.gameplay_state = gameplay_state
@@ -155,19 +160,18 @@ class GameplaySystem:
         """
         Handle game over event
         """
-        self.event_bus.emit(EventType.GAME_OVER, {})
-
+        self.event_bus.emit(EventType.GAME_OVER, {"name": "game_over"})
 
     def pause(self):
         self.is_paused = True
 
     def resume(self):
         self.is_paused = False
-    
+
     def restart(self):
-        self.resume()  
+        self.resume()
         self._handle_reset()  # Reset game state and objects
-    
+
     def reset(self):
         self.pause()
         self._handle_reset()
@@ -175,8 +179,11 @@ class GameplaySystem:
     def _handle_reset(self):
         self.object_manager.clear()  # Clear existing objects
         self.gameplay_state.reset()
-        self.object_manager.add_object(self.spawner.basket)  # Reset object manager with only the basket
+        self.object_manager.add_object(
+            self.spawner.basket
+        )  # Reset object manager with only the basket
         self.multiplier = 1.0
+
     # ----------------------------
     # Render data
     # ----------------------------
@@ -184,6 +191,7 @@ class GameplaySystem:
     def get_render_data(self):
         data = []
 
+        data.append(self._get_background_data())
         data.append(self._get_score_data())
         data.append(self._get_life_data())
         data.append(self._get_level_data())
@@ -194,24 +202,29 @@ class GameplaySystem:
                 data.append(rd)
         return data
 
+    def _get_background_data(self):
+        image = load_ui_image("background_gameplay", "png", width=1280, height=720)
+        background = Background(image=image)
+        return background.get_render_data()
 
     def _get_score_data(self):
         text = f"Score: {self.gameplay_state.score}"
-        score = Label(x=10, y=10, size=36, text=text, color=(255, 255, 255))
+        score = Label(x=10, y=10, size=36, text=text, color=(0, 0, 0))
         return score.get_render_data()
 
     def _get_life_data(self):
         text = f"Lives: {self.gameplay_state.life}"
-        life = Label(x=10, y=50, size=36, text=text, color=(255, 255, 255))
+        life = Label(x=10, y=50, size=36, text=text, color=(0, 0, 0))
         return life.get_render_data()
 
     def _get_level_data(self):
         text = f"Level: {self.gameplay_state.level}"
-        level = Label(x=10, y=90, size=36, text=text, color=(255, 255, 255))
+        level = Label(x=10, y=90, size=36, text=text, color=(0, 0, 0))
         return level.get_render_data()
 
     def _get_timer_data(self):
         text = f"Time: {self.gameplay_state.time_elapsed:.1f}s"
-        timer = Label(x=SCREEN_WIDTH // 2 - 100, y=10, size=36, text=text, color=(255, 255, 255))
+        timer = Label(
+            x=SCREEN_WIDTH // 2 - 100, y=10, size=36, text=text, color=(0, 0, 0)
+        )
         return timer.get_render_data()
-

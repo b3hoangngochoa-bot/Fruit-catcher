@@ -22,9 +22,10 @@ class InputSystem:
     # Bán kính mặc định của vùng basket bắt trái cây
     BASKET_RADIUS = 50
 
-    def __init__(self, mapper, smoother):
+    def __init__(self, mapper, smoother, event_bus):
         self.mapper = mapper
         self.smoother = smoother
+        self.event_bus = event_bus
 
     def update(self, hand_data: dict | None) -> dict:
         """
@@ -81,7 +82,7 @@ class InputSystem:
             "cursor": {
                 "x": x,
                 "y": y,
-                "click": click,   # TODO: detect gesture "pinch" → True
+                "click": click,  # TODO: detect gesture "pinch" → True
             },
             # Task 4 — basket vùng bắt trái (cùng vị trí cursor)
             "basket": {

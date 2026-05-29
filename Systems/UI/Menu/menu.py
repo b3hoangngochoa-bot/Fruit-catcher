@@ -2,7 +2,9 @@ from Systems.UI.Menu.menu_base import MenuBase
 from Systems.UI.Elements.button import Button
 from Systems.UI.Elements.background import Background
 from Core.event_type import EventType
-from Utils.load_asset import load_ui_image
+from Utils import load_asset, constants
+
+load_ui_image = load_asset.load_ui_image
 
 
 class Menu(MenuBase):
@@ -16,17 +18,41 @@ class Menu(MenuBase):
         - Start button
         - Quit button
         """
-        image = load_ui_image("background","jpg", width=800, height=600)
+        background_image = load_ui_image(
+            "background_menu", "png", width=1280, height=720
+        )
+        start_button_image = load_ui_image(
+            "button_start_normal", "png", width=200, height=100
+        )
+        start_button_image_hover = load_ui_image(
+            "button_start_hover", "png", width=200, height=100
+        )
+        quit_button_image = load_ui_image(
+            "button_quit_normal", "png", width=200, height=100
+        )
+        quit_button_image_hover = load_ui_image(
+            "button_quit_hover", "png", width=200, height=100
+        )
         self.elements = [
-            Background(image=image),
+            Background(image=background_image),
             Button(
-                x=400,
-                y=200,
+                x=constants.SCREEN_WIDTH // 2,
+                y=constants.SCREEN_HEIGHT // 2 - 50,
                 text="Start",
                 action=EventType.GAME_START,
                 color=(0, 255, 0),
+                image=start_button_image,
+                image_hover=start_button_image_hover,
+                name_action="game_start",
             ),
             Button(
-                x=400, y=300, text="Quit", action=EventType.QUIT_GAME, color=(255, 0, 0)
+                x=constants.SCREEN_WIDTH // 2,
+                y=constants.SCREEN_HEIGHT // 2 + 100,
+                text="Quit",
+                action=EventType.QUIT_GAME,
+                color=(255, 0, 0),
+                image=quit_button_image,
+                image_hover=quit_button_image_hover,
+                name_action="quit_game",
             ),
         ]
