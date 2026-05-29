@@ -25,5 +25,5 @@ def load_fruit_image(fruit_type, width, height):
 def load_bomb_image(width, height):
     return _load_image(PATH_TO_IMAGES + "Bomb/bomb.png", width=width, height=height)
 
-def load_ui_image(name, width=None, height=None):
-    return _load_image(PATH_TO_IMAGES + f"UI/{name}.jpg", width=width, height=height)
+def load_ui_image(name, ext="jpg", width=None, height=None):
+    return _load_image(PATH_TO_IMAGES + f"UI/{name}.{ext}", width=width, height=height)

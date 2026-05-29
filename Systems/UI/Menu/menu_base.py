@@ -12,9 +12,9 @@ class MenuBase(ABC):
         """
         pass
 
-    def update(self, event_bus, cursor):
+    def update(self, input_data, event_bus, cursor, delta_time):
         for element in self.elements:
-            element.update(event_bus, cursor)
+            element.update(input_data, event_bus, cursor, delta_time)
 
     def get_render_data(self):
         render_data = []

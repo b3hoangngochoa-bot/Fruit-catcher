@@ -16,7 +16,7 @@ class Menu(MenuBase):
         - Start button
         - Quit button
         """
-        image = load_ui_image("background", width=800, height=600)
+        image = load_ui_image("background","jpg", width=800, height=600)
         self.elements = [
             Background(image=image),
             Button(
