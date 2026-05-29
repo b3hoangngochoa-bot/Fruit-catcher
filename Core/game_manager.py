@@ -76,19 +76,31 @@ class GameManager:
 
     def _on_game_start(self, data):
         self.state = Mode.PLAYING
+        self.gameplay_system.resume()  # Ensure gameplay system is active
+        self.cursor.active = False 
 
     def _on_pause(self, data):
         self.state = Mode.PAUSE
+        self.cursor.active = True  # Show cursor in pause menu
+        self.gameplay_system.pause()  # Pause the gameplay system
 
     def _on_resume(self, data):
         self.state = Mode.PLAYING
+        self.cursor.active = False  # Hide cursor when resuming
+        self.gameplay_system.resume()  # Resume the gameplay system
 
     def _on_game_over(self, data):
-        self.gameplay_system.pause()
         self.state = Mode.GAME_OVER
+        self.cursor.active = True  # Show cursor on game over
+        self.gameplay_system.pause()  # Pause the gameplay system on game over
 
     def _on_go_to_menu(self, data):
         self.state = Mode.MENU
+        self.cursor.active = True  # Show cursor when going to menu
+        self.gameplay_system.reset()  # Reset gameplay state when going back to menu
 
     def _on_game_restart(self, data):
-        pass
+        self.state = Mode.PLAYING
+        self.cursor.active = False  # Hide cursor when restarting
+        self.gameplay_system.restart()  # Reset gameplay state
+

@@ -1,6 +1,6 @@
+import pygame
 from .ui_element import UIElement
 from Core.event_type import EventType
-import pygame
 
 
 class Button(UIElement):
@@ -23,32 +23,71 @@ class Button(UIElement):
         self.current_color = color
         self.action = action
         self.hover_time = 0
+        self.scale = 1.0
         self.hover_threshold = 1.0  # seconds to trigger hold action
 
-    def update(self, input_data, event_bus, cursor, delta_time):
-        """
-        Detect hover / hold → return Event
-        """
-        cursor.update(input_data)
-        self.hover_time += delta_time
-        if self._is_hovered(cursor):
-            self.current_color = (200, 200, 200)  # lighter color on hover
+    def update(self, event_bus, cursor, delta_time):
+        if not self.enabled:
+            return
+
+        is_hover = self._is_hovered(cursor)
+
+        # ----------------------------
+        # HOVER STATE
+        # ----------------------------
+        if is_hover:
+            # emit hover (1 lần khi bắt đầu hover)
+            if self.hover_time == 0:
+                event_bus.emit(EventType.BUTTON_HOVER, {"target": self})
+
+            self.hover_time += delta_time
+
+            # visual feedback
+            self.current_color = (200, 200, 200)
+
+            # ----------------------------
+            # HOLD STATE
+            # ----------------------------
+
             if self.hover_time >= self.hover_threshold:
-                event_bus.emit(self.action, {})  # emit event with empty payload
-                self.hover_time = 0  # reset hover time after action
+                event_bus.emit(
+                    EventType.BUTTON_HOLD,
+                    {
+                        "target": self,
+                        "progress": self.hover_time / self.hover_threshold,
+                    },
+                )
+
+                # ----------------------------
+                # CLICK TRIGGER (hold complete)
+                # ----------------------------
+                event_bus.emit(EventType.BUTTON_CLICK, {"target": self})
+
+                # 🔥 ACTION EVENT (QUAN TRỌNG)
+                if self.action:
+                    event_bus.emit(self.action, {})
+
+                # reset sau khi click
+                self.hover_time = 0
+
         else:
-            self.hover_time = 0  # reset if not hovered
-            self.current_color = self.color  # reset to original color
-        return None
-    
+            # reset khi rời khỏi button
+            if self.hover_time > 0:
+                event_bus.emit(EventType.BUTTON_UNHOVER, {"target": self})
+
+            self.hover_time = 0
+            self.current_color = self.color
+
     def _is_hovered(self, cursor):
-        return (
-            self.x - self.width / 2 <= cursor.x <= self.x + self.width / 2
-            and self.y - self.height / 2 <= cursor.y <= self.y + self.height / 2
-        )
+        left = self.x - self.width / 2
+        right = self.x + self.width / 2
+        top = self.y - self.height / 2
+        bottom = self.y + self.height / 2
+
+        return left <= cursor.x <= right and top <= cursor.y <= bottom
 
     def get_render_data(self):
-        if not self.visible:
+        if not self.enabled:
             return None
 
         return {
@@ -62,5 +101,6 @@ class Button(UIElement):
             "radius": None,
             "layer": self.render_layer,
             "shape": "rect",
+            "scale": self.scale,
             "image": self.image or None,
         }
