@@ -15,7 +15,7 @@ class UIElement(ABC):
         self.render_layer = RenderLayer.UI
 
     @abstractmethod
-    def update(self, cursor):
+    def update(self, input_data, event_bus, cursor, delta_time):
         """
         Process interaction (hover, click, etc.)
         Return Event or None

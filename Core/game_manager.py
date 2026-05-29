@@ -32,7 +32,7 @@ class GameManager:
         self.event_bus.subscribe(EventType.GO_TO_MENU, self._on_go_to_menu)
         self.event_bus.subscribe(EventType.GAME_RESTART, self._on_game_restart)
 
-        self.state = Mode.PLAYING  # default state
+        self.state = Mode.MENU  # default state
         self.cursor = Cursor()
 
     def game_loop(self):
@@ -51,16 +51,16 @@ class GameManager:
 
         # 2. state-based update
         if self.state == Mode.MENU:
-            self.ui_system.update(input_data, self.state)
+            self.ui_system.update(input_data, self.cursor, self.state, delta_time)
 
         elif self.state == Mode.PLAYING:
             self.gameplay_system.update(input_data, delta_time)
 
         elif self.state == Mode.PAUSE:
-            self.ui_system.update(input_data, self.state)
+            self.ui_system.update(input_data, self.cursor, self.state, delta_time)
 
         elif self.state == Mode.GAME_OVER:
-            self.ui_system.update(input_data, self.state)
+            self.ui_system.update(input_data, self.cursor, self.state, delta_time)
 
     def draw(self):
         render_queue = []
@@ -89,6 +89,6 @@ class GameManager:
 
     def _on_go_to_menu(self, data):
         self.state = Mode.MENU
-    
+
     def _on_game_restart(self, data):
         pass

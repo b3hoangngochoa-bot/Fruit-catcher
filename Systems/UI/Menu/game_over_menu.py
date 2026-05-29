@@ -17,7 +17,7 @@ class GameOverMenu(MenuBase):
         - Restart button
         - Back to menu button
         """
-        image = load_ui_image("background", width=800, height=600)
+        image = load_ui_image("background","jpg", width=800, height=600)
         self.elements = [
             Label(x=350, y=100, size=50, text="Game Over", color=(255, 0, 0)),
             Background(image=image),
