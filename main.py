@@ -132,10 +132,6 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
-            # if game_manager.state == Mode.PLAYING:
-            #     game_manager.state = Mode.PAUSE
-            # elif game_manager.state == Mode.PAUSE:
-            #     game_manager.state = Mode.PLAYING
 
         # 2. Update Vision (camera + hand detect)
         # systems["vision"].update()

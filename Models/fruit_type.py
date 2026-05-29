@@ -5,3 +5,8 @@ class FruitType(Enum):
     APPLE = 2
     BANANA = 3
     WATERMELON = 4
+    AVOCADO = 5
+    BERRIES = 6
+    LEMON = 7
+    PEAR = 8
+    TOMATO = 9

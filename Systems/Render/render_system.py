@@ -5,31 +5,7 @@ class RenderSystem:
     def __init__(self, screen):
         self.screen = screen
 
-    def draw(self, state, input_data):
-        # draw everything based on state
-        pass
-
-    def draw(self):
-        pass
-
-    def draw_cursor(self, cursor):
-        pass
-
-    def draw_basket(self, basket):
-        pass
-
-    # def draw_gameplay(self, gameplay_system):
-    #     # clear screen
-    #     self.screen.fill((0, 0, 0))
-    #     # 1. draw game objects
-    #     gameplay_system.draw(self.screen)
-
-    def draw_ui(self, ui_data, state):
-        pass
-
     def draw(self, render_queue):
-        self.screen.fill((0, 0, 0))
-
         # sort layer
         render_queue = [item for item in render_queue if item]
         render_queue.sort(key=lambda x: x["layer"])
@@ -46,10 +22,27 @@ class RenderSystem:
             else:
                 self.screen.fill(item["color"])
             return
-        
+
         # ưu tiên image
         if item.get("image"):
-            self.screen.blit(item["image"], (item["x"], item["y"]))
+            if item.get("basket"):
+                self.screen.blit(
+                    item["image"],
+                    (
+                        item["x"] - item["width"] // 2,
+                        item["y"] - item["height"] // 2 - 50,
+                    ),
+                )
+            elif item.get("button"):
+                self.screen.blit(
+                    item["image"],
+                    (
+                        item["x"] - item["width"] // 2 - 50,
+                        item["y"] - item["height"] // 2,
+                    ),
+                )
+            else:
+                self.screen.blit(item["image"], (item["x"], item["y"]))
             return
         else:
             shape = item.get("shape")

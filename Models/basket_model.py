@@ -27,5 +27,6 @@ class Basket(BaseEntity):
             "radius": None,
             "layer": self.render_layer,
             "shape": "rect",
+            "basket": True,
             "image": self.image or None,
         }

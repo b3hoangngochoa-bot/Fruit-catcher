@@ -21,6 +21,17 @@ def load_fruit_image(fruit_type, width, height):
         return _load_image(PATH_TO_IMAGES + "Fruits/watermelon.png", width=width, height=height)
     elif fruit_type == FruitType.BANANA:
         return _load_image(PATH_TO_IMAGES + "Fruits/banana.png", width=width, height=height)
+    elif fruit_type == FruitType.AVOCADO:
+        return _load_image(PATH_TO_IMAGES + "Fruits/avocado.png", width=width, height=height)
+    elif fruit_type == FruitType.BERRIES:
+        return _load_image(PATH_TO_IMAGES + "Fruits/berries.png", width=width, height=height)
+    elif fruit_type == FruitType.LEMON:
+        return _load_image(PATH_TO_IMAGES + "Fruits/lemon.png", width=width, height=height)
+    elif fruit_type == FruitType.PEAR:
+        return _load_image(PATH_TO_IMAGES + "Fruits/pear.png", width=width, height=height)
+    elif fruit_type == FruitType.TOMATO:
+        return _load_image(PATH_TO_IMAGES + "Fruits/tomato.png", width=width, height=height)
+
 
 def load_bomb_image(width, height):
     return _load_image(PATH_TO_IMAGES + "Bomb/bomb.png", width=width, height=height)
