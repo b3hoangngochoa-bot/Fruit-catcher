@@ -54,7 +54,7 @@ def create_systems(screen):
     collision_system = CollisionSystem(event_bus)
 
     # Audio
-    audio_system = AudioSystem(event_bus)
+    audio_system = AudioSystem(event_bus, pygame.mixer)
 
     # Gameplay
     spawner = Spawner()

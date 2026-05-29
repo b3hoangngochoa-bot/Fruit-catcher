@@ -1,6 +1,7 @@
 from Models.fruit_model import Fruit
 from Models.bomb_model import Bomb
 from Models.fruit_type import FruitType
+from Models.basket_model import Basket
 from random import choice, randint
 from Utils import constants
 
@@ -15,6 +16,7 @@ class Spawner:
             FruitType.WATERMELON,
             FruitType.BANANA,
         ]
+        self.basket = Basket()
 
     def update(self, object_manager, delta_time, difficulty_multiplier=0):
 

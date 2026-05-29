@@ -13,16 +13,15 @@ class UISystem:
         Route update based on game state
         Return Event or None
         """
+        cursor.update(input_data)  # Update cursor position based on input
         if state == Mode.MENU:
-            self.menu.update(input_data, self.event_bus, cursor, delta_time)
+            self.menu.update(self.event_bus, cursor, delta_time)
 
         elif state == Mode.PAUSE:
-            self.pause_menu.update(input_data, self.event_bus, cursor, delta_time)
+            self.pause_menu.update(self.event_bus, cursor, delta_time)
 
         elif state == Mode.GAME_OVER:
-            self.game_over_menu.update(input_data, self.event_bus, cursor, delta_time)
-
-        return None
+            self.game_over_menu.update(self.event_bus, cursor, delta_time)
 
     def get_render_data(self, state):
         ui = self._get_current_ui(state)

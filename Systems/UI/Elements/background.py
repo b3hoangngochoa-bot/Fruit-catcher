@@ -18,11 +18,11 @@ class Background(UIElement):
         self.render_layer = RenderLayer.BACKGROUND
         self.full_screen = full_screen  # Indicates this should cover the entire screen
 
-    def update(self, input_data, event_bus, cursor, delta_time):
+    def update(self, event_bus, cursor, delta_time):
         return None
 
     def get_render_data(self):
-        if not self.visible:
+        if not self.enabled:
             return None
 
         return {

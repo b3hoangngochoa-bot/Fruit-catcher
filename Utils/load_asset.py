@@ -1,5 +1,5 @@
 import pygame
-from Utils.constants import PATH_TO_IMAGES, PATH_TO_SOUNDS
+from Utils.constants import PATH_TO_IMAGES, PATH_TO_SFX, PATH_TO_MUSIC
 from Models.fruit_type import FruitType
 
 
@@ -27,3 +27,9 @@ def load_bomb_image(width, height):
 
 def load_ui_image(name, ext="jpg", width=None, height=None):
     return _load_image(PATH_TO_IMAGES + f"UI/{name}.{ext}", width=width, height=height)
+
+def load_sfx(name,ext, mixer=None):
+    return mixer.Sound(PATH_TO_SFX + f"{name}.{ext}")
+
+def load_music(name,ext, mixer=None):
+    return mixer.music.load(PATH_TO_MUSIC + f"{name}.{ext}")

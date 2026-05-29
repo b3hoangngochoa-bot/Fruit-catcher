@@ -14,3 +14,9 @@ class GameplayState:
 
     def is_game_over(self):
         return self.life <= 0
+
+    def reset(self):
+        self.score = 0
+        self.life = 3
+        self.level = 1
+        self.time_elapsed = 0

@@ -54,7 +54,7 @@ class CollisionSystem:
     # ----------------------------
     def _handle_collision(self, obj):
         if obj.tag == "FRUIT":
-            self.event_bus.emit(EventType.FRUIT_HIT, {"fruit": obj})
+            self.event_bus.emit(EventType.FRUIT_HIT, {"fruit": obj, "name": "fruit_hit"})
 
         elif obj.tag == "BOMB":
-            self.event_bus.emit(EventType.BOMB_HIT, {"bomb": obj})
+            self.event_bus.emit(EventType.BOMB_HIT, {"bomb": obj, "name": "bomb_hit"})

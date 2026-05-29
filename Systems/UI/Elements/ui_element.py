@@ -9,13 +9,12 @@ class UIElement(ABC):
         self.width = width
         self.height = height
         self.image = image
-        self.visible = True
         self.enabled = True
         self.color = (255, 255, 255)  # Default color for debugging
         self.render_layer = RenderLayer.UI
 
     @abstractmethod
-    def update(self, input_data, event_bus, cursor, delta_time):
+    def update(self, event_bus, cursor, delta_time):
         """
         Process interaction (hover, click, etc.)
         Return Event or None

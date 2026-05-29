@@ -16,11 +16,9 @@ class GameplaySystem:
     ):
         # core systems
         self.spawner = spawner
-        self.basket = (
-            Basket()
-        )  # Temporary, should be created by spawner and managed by object_manager
+    
         self.object_manager = object_manager
-        self.object_manager.add_object(self.basket)  # Add basket to object manager
+        self.object_manager.add_object(self.spawner.basket)  # Add basket to object manager
         self.collision_system = collision_system
         # Event
         self.event_bus = event_bus
@@ -158,14 +156,27 @@ class GameplaySystem:
         Handle game over event
         """
         self.event_bus.emit(EventType.GAME_OVER, {})
-        pass
+
 
     def pause(self):
         self.is_paused = True
 
     def resume(self):
         self.is_paused = False
+    
+    def restart(self):
+        self.resume()  
+        self._handle_reset()  # Reset game state and objects
+    
+    def reset(self):
+        self.pause()
+        self._handle_reset()
 
+    def _handle_reset(self):
+        self.object_manager.clear()  # Clear existing objects
+        self.gameplay_state.reset()
+        self.object_manager.add_object(self.spawner.basket)  # Reset object manager with only the basket
+        self.multiplier = 1.0
     # ----------------------------
     # Render data
     # ----------------------------

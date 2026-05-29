@@ -19,11 +19,11 @@ class Label(UIElement):
         self.text_surface = self.font.render(text, True, self.color)
         self.text_rect = (self.x, self.y)
 
-    def update(self, input_data, event_bus, cursor, delta_time):
+    def update(self, event_bus, cursor, delta_time):
         return None
 
     def get_render_data(self):
-        if not self.visible:
+        if not self.enabled:
             return None
 
         return {

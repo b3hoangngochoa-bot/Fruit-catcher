@@ -16,6 +16,7 @@ class EventType:
     BUTTON_CLICK = "BUTTON_CLICK"
     BUTTON_HOVER = "BUTTON_HOVER"
     BUTTON_HOLD = "BUTTON_HOLD"
+    BUTTON_UNHOVER = "BUTTON_UNHOVER"
 
     # ----------------------------
     # GAMEPLAY
