@@ -1,6 +1,6 @@
 from Systems.UI.Menu.menu_base import MenuBase
-from Systems.UI.button import Button
-from Systems.UI.background import Background
+from Systems.UI.Elements.button import Button
+from Systems.UI.Elements.background import Background
 from Core.event_type import EventType
 from Utils.load_asset import load_ui_image
 

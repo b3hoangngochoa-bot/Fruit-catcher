@@ -1,6 +1,7 @@
 from Systems.UI.Menu.menu_base import MenuBase
-from Systems.UI.button import Button
-from Systems.UI.background import Background
+from Systems.UI.Elements.button import Button
+from Systems.UI.Elements.background import Background
+from Systems.UI.Elements.label import Label
 from Core.event_type import EventType
 from Utils.load_asset import load_ui_image
 
@@ -18,6 +19,7 @@ class GameOverMenu(MenuBase):
         """
         image = load_ui_image("background", width=800, height=600)
         self.elements = [
+            Label(x=350, y=100, size=50, text="Game Over", color=(255, 0, 0)),
             Background(image=image),
             Button(
                 x=400,

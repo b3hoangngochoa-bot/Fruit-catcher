@@ -67,7 +67,6 @@ class GameManager:
 
         if self.state == Mode.PLAYING:
             render_queue += self.gameplay_system.get_render_data()
-            self.gameplay_system.draw_hud(self.render_system.screen)
 
         render_queue += self.ui_system.get_render_data(self.state)
 

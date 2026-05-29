@@ -1,8 +1,7 @@
-from cv2 import data
-import pygame
 from Models.basket_model import Basket
 from Core.event_type import EventType
 from Utils.constants import SCREEN_HEIGHT, SCREEN_WIDTH
+from Systems.UI.Elements.label import Label
 
 
 class GameplaySystem:
@@ -174,45 +173,34 @@ class GameplaySystem:
     def get_render_data(self):
         data = []
 
+        data.append(self._get_score_data())
+        data.append(self._get_life_data())
+        data.append(self._get_level_data())
+        data.append(self._get_timer_data())
         for obj in self.object_manager.get_objects():
             rd = obj.get_render_data()
             if rd:
                 data.append(rd)
-
         return data
 
-    #
-    def draw_hud(self, screen):
-        """
-        Draw score, life, level, time
-        """
-        self._draw_score(screen)
-        self._draw_life(screen)
-        self._draw_level(screen)
-        self._draw_timer(screen)
 
-    def _draw_score(self, screen):
+    def _get_score_data(self):
         text = f"Score: {self.gameplay_state.score}"
-        font = pygame.font.SysFont("Arial", 36)
-        text_surface = font.render(text, True, (255, 255, 255))
-        screen.blit(text_surface, (10, 10))
+        score = Label(x=10, y=10, size=36, text=text, color=(255, 255, 255))
+        return score.get_render_data()
 
-    def _draw_life(self, screen):
+    def _get_life_data(self):
         text = f"Lives: {self.gameplay_state.life}"
-        font = pygame.font.SysFont("Arial", 36)
-        text_surface = font.render(text, True, (255, 255, 255))
-        screen.blit(text_surface, (10, 50))
+        life = Label(x=10, y=50, size=36, text=text, color=(255, 255, 255))
+        return life.get_render_data()
 
-    def _draw_level(self, screen):
+    def _get_level_data(self):
         text = f"Level: {self.gameplay_state.level}"
-        font = pygame.font.SysFont("Arial", 36)
-        text_surface = font.render(text, True, (255, 255, 255))
-        screen.blit(text_surface, (10, 90))
+        level = Label(x=10, y=90, size=36, text=text, color=(255, 255, 255))
+        return level.get_render_data()
 
-    def _draw_timer(self, screen):
+    def _get_timer_data(self):
         text = f"Time: {self.gameplay_state.time_elapsed:.1f}s"
-        font = pygame.font.SysFont("Arial", 36)
-        text_surface = font.render(text, True, (255, 255, 255))
-        screen.blit(
-            text_surface, (SCREEN_WIDTH // 2 - text_surface.get_width() // 2, 10)
-        )
+        timer = Label(x=SCREEN_WIDTH // 2 - 100, y=10, size=36, text=text, color=(255, 255, 255))
+        return timer.get_render_data()
+
