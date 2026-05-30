@@ -3,6 +3,7 @@ from Core.game_state import Mode
 from Models.cursor_model import Cursor
 
 
+
 class GameManager:
     def __init__(
         self,
@@ -42,15 +43,12 @@ class GameManager:
 
     def update(self, delta_time):
         # 1. Lấy hand_data từ VisionSystem (đã được update() ở main loop)
-        # hand_data = self.vision_system.get_hand_data()
+        hand_data = self.vision_system.get_hand_data()
 
-        # 2. Chuyển hand_data → input_data (pixel màn hình, đã làm mượt)
-        # input_data = self.input_system.update(hand_data)
+        # 2. Chuyển hand_data → input_data + tự emit gesture event nếu có
+        input_data = self.input_system.update(hand_data=hand_data, delta_time=delta_time)
 
-        # 1. input
-        input_data = self.input_system.update()
-
-        # 2. state-based update
+        # 3. state-based update
         if self.state == Mode.MENU:
             self.ui_system.update(input_data, self.cursor, self.state, delta_time)
 

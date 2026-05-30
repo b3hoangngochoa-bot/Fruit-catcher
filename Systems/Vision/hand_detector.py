@@ -5,7 +5,7 @@ import mediapipe as mp
 class HandDetector:
     """
     Task 3 + 4 + 5 của Vision System:
-      - Task 3: Detect bàn tay bằng MediaPipe
+      - Task 3: Detect bàn tay bằng MediaPipe (tối đa 2 tay)
       - Task 4: Lấy vị trí ngón trỏ (INDEX_FINGER_TIP, landmark index = 8)
       - Task 5: Đóng gói output thành hand_data chuẩn
 
@@ -13,9 +13,12 @@ class HandDetector:
         {
             "detected": bool,
             "fingertip": {
-                "x": float,  # normalized [0.0, 1.0]
+                "x": float,  # normalized [0.0, 1.0] — ngón trỏ tay đầu tiên
                 "y": float,  # normalized [0.0, 1.0]
             },
+            "hands": [                        # list landmarks của mỗi bàn tay
+                [ {"x": float, "y": float, "z": float}, ... ],  # 21 landmarks/tay
+            ],
             "frame": np.ndarray  # frame BGR gốc (để debug/render)
         }
     """
@@ -35,6 +38,7 @@ class HandDetector:
 
         self._hands = self._mp_hands.Hands(
             model_complexity=model_complexity,
+            max_num_hands=2,  # Detect tối đa 2 tay để nhận diện gesture
             min_detection_confidence=min_detection_confidence,
             min_tracking_confidence=min_tracking_confidence,
         )
@@ -71,14 +75,22 @@ class HandDetector:
             return {
                 "detected": False,
                 "fingertip": None,
+                "hands": [],
                 "frame": frame_bgr,
             }
 
-        # Lấy bàn tay đầu tiên phát hiện được
-        hand_landmarks = results.multi_hand_landmarks[0]
+        # --- Task 4: Fingertip Extraction (tay đầu tiên, landmark index = 8) ---
+        first_hand = results.multi_hand_landmarks[0]
+        tip = first_hand.landmark[self.FINGERTIP_INDEX]
 
-        # --- Task 4: Fingertip Extraction (landmark index = 8) ---
-        tip = hand_landmarks.landmark[self.FINGERTIP_INDEX]
+        # Đóng gói landmarks thô của tất cả bàn tay (cho GestureDetector)
+        hands_landmarks = [
+            [
+                {"x": lm.x, "y": lm.y, "z": lm.z}
+                for lm in hand.landmark
+            ]
+            for hand in results.multi_hand_landmarks
+        ]
 
         # --- Task 5: Output Packaging ---
         return {
@@ -87,6 +99,7 @@ class HandDetector:
                 "x": tip.x,  # normalized [0.0, 1.0]
                 "y": tip.y,  # normalized [0.0, 1.0]
             },
+            "hands": hands_landmarks,  # list landmarks của từng bàn tay
             "frame": frame_bgr,
         }
 

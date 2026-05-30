@@ -27,6 +27,7 @@ class EventType:
     OBJECT_SPAWNED = "OBJECT_SPAWNED"
     OBJECT_DESPAWNED = "OBJECT_DESPAWNED"
 
+
     # ----------------------------
     # PROGRESSION
     # ----------------------------
