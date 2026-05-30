@@ -36,26 +36,19 @@ class AudioSystem:
         self.event_bus.subscribe(EventType.BUTTON_HOVER, self._on_button_hover)
         self.event_bus.subscribe(EventType.BUTTON_HOLD, self._on_button_hold)
 
+        self.play_music("background_music_menu", "mp3")
+
     def play_sfx(self, name, extension="wav"):
         if name not in self.sfx_cache:
             self.sfx_cache[name] = load_sfx(name, extension, self.mixer)
         self.sfx_cache[name].set_volume(1)  # Adjust volume as needed
         self.sfx_cache[name].play()
 
-    # def play_music(self, name="background", extension="mp3"):
-    #     if name not in self.music_cache:
-    #         self.music_cache[name] = load_music(name, extension, self.mixer)
-    #     self.mixer.music.set_volume(0.5)  # Adjust volume as needed
-    #     self.mixer.music.play(-1)  # Loop indefinitely
-
     def play_music(self, name="background", extension="mp3"):
 
         path = PATH_TO_MUSIC + f"{name}.{extension}"
-
         self.mixer.music.load(path)
-
         self.mixer.music.set_volume(0.5)
-
         self.mixer.music.play(-1)
 
     def stop_music(self):
@@ -79,33 +72,40 @@ class AudioSystem:
     def _on_game_start(self, data):
         name = self.name_sfx[data["name"]][0]
         extension = self.name_sfx[data["name"]][1]
+        self.stop_music()
         self.play_sfx(name, extension)
         self.play_music("background_music_gameplay", "mp3")
 
     def _on_game_over(self, data):
         name = self.name_sfx[data["name"]][0]
         extension = self.name_sfx[data["name"]][1]
+        self.stop_music()
         self.play_sfx(name, extension)
 
     def _on_game_pause(self, data):
         name = self.name_sfx[data["name"]][0]
         extension = self.name_sfx[data["name"]][1]
+        self.stop_music()
         self.play_sfx(name, extension)
 
     def _on_game_resume(self, data):
         name = self.name_sfx[data["name"]][0]
         extension = self.name_sfx[data["name"]][1]
         self.play_sfx(name, extension)
+        self.play_music("background_music_gameplay", "mp3")
 
     def _on_game_restart(self, data):
         name = self.name_sfx[data["name"]][0]
         extension = self.name_sfx[data["name"]][1]
         self.play_sfx(name, extension)
+        self.play_music("background_music_gameplay", "mp3")
 
     def _on_go_to_menu(self, data):
         name = self.name_sfx[data["name"]][0]
         extension = self.name_sfx[data["name"]][1]
+        self.stop_music()
         self.play_sfx(name, extension)
+        self.play_music("background_music_menu", "mp3")
 
     def _on_button_click(self, data):
         name = self.name_sfx[data["name"]][0]

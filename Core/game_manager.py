@@ -31,6 +31,7 @@ class GameManager:
         self.event_bus.subscribe(EventType.GAME_OVER, self._on_game_over)
         self.event_bus.subscribe(EventType.GO_TO_MENU, self._on_go_to_menu)
         self.event_bus.subscribe(EventType.GAME_RESTART, self._on_game_restart)
+        self.event_bus.subscribe(EventType.QUIT_GAME, self._on_quit)
 
         self.state = Mode.MENU  # default state
         self.cursor = Cursor()
@@ -96,11 +97,13 @@ class GameManager:
 
     def _on_go_to_menu(self, data):
         self.state = Mode.MENU
-        self.cursor.active = True  # Show cursor when going to menu
         self.gameplay_system.reset()  # Reset gameplay state when going back to menu
+        self.cursor.active = True  # Show cursor when going to menu
 
     def _on_game_restart(self, data):
         self.state = Mode.PLAYING
-        self.cursor.active = False  # Hide cursor when restarting
         self.gameplay_system.restart()  # Reset gameplay state
+        self.cursor.active = False  # Hide cursor when restarting
 
+    def _on_quit(self, data):
+        self.state = Mode.QUIT

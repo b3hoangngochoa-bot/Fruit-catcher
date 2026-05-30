@@ -31,7 +31,8 @@ from Systems.Collision.collision_system import CollisionSystem
 from Systems.Render.render_system import RenderSystem
 from Systems.Audio.audio_system import AudioSystem
 from Core.observer import EventBus
-import Utils.constants as constants
+from Utils import constants
+from Core.event_type import EventType
 
 
 # 🎯 Factory tạo toàn bộ systems
@@ -128,10 +129,20 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if game_manager.state == Mode.QUIT:
+                running = False
             # optional: ESC → pause
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     running = False
+                if event.key == pygame.K_p:
+                    if game_manager.state == Mode.PLAYING:
+                        systems["event_bus"].emit(EventType.GAME_PAUSE, {"name": "pause_game"})
+                    elif game_manager.state == Mode.PAUSE:
+                        systems["event_bus"].emit(EventType.GAME_RESUME, {"name": "resume_game"})
+                if event.key == pygame.K_o:
+                    if game_manager.state == Mode.PLAYING:
+                        systems["event_bus"].emit(EventType.GAME_OVER, {"name": "game_over"})
 
         # 2. Update Vision (camera + hand detect)
         # systems["vision"].update()
