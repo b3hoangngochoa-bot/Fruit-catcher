@@ -44,7 +44,7 @@ class PauseMenu(MenuBase):
             Background(image=background_image),
             Button(
                 x=constants.SCREEN_WIDTH // 2,
-                y=constants.SCREEN_HEIGHT // 2 - 150,
+                y=constants.SCREEN_HEIGHT // 2,
                 text="Resume",
                 action=EventType.GAME_RESUME,
                 color=(0, 255, 0),
@@ -54,7 +54,7 @@ class PauseMenu(MenuBase):
             ),
             Button(
                 x=constants.SCREEN_WIDTH // 2,
-                y=constants.SCREEN_HEIGHT // 2,
+                y=constants.SCREEN_HEIGHT // 2 + 120,
                 text="Restart",
                 action=EventType.GAME_RESTART,
                 color=(255, 0, 0),
@@ -64,7 +64,7 @@ class PauseMenu(MenuBase):
             ),
             Button(
                 x=constants.SCREEN_WIDTH // 2,
-                y=constants.SCREEN_HEIGHT // 2 + 150,
+                y=constants.SCREEN_HEIGHT // 2 + 240,
                 text="Back to Menu",
                 action=EventType.GO_TO_MENU,
                 color=(255, 255, 0),
