@@ -13,10 +13,11 @@ class MouseInputSystemMock:
     def __init__(self):
         pass
 
-    def update(self, hand_data=None) -> dict:
+    def update(self, hand_data=None, delta_time: float = 0.0) -> dict:
         """
         Lấy vị trí chuột và trả về input_data cùng format với InputSystem.
         Tham số hand_data bị bỏ qua (chỉ để tương thích interface).
+        Gesture không có trong mock vì không có camera.
         """
         mouse_x, mouse_y = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]

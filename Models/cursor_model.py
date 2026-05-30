@@ -1,6 +1,6 @@
 from Models.base_entity import BaseEntity
 from Systems.Render.render_layer import RenderLayer
-import pygame
+
 
 
 class Cursor(BaseEntity):
