@@ -48,7 +48,7 @@ class AudioSystem:
 
         path = PATH_TO_MUSIC + f"{name}.{extension}"
         self.mixer.music.load(path)
-        self.mixer.music.set_volume(0.5)
+        self.mixer.music.set_volume(0.3)
         self.mixer.music.play(-1)
 
     def stop_music(self):
