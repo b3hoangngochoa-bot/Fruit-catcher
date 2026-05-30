@@ -1,30 +1,38 @@
 # 🍎 Fruit Catcher
-# 🍎 Fruit Catcher
 
 ![Python](https://img.shields.io/badge/Python-3.10-blue)
 ![Pygame](https://img.shields.io/badge/Pygame-Game_Development-green)
 ![Status](https://img.shields.io/badge/Status-In_Development-orange)
 
-Fruit Catcher là một game arcade được phát triển bằng Python và Pygame.
+Fruit Catcher là một game arcade được phát triển bằng Python, Pygame, OpenCV and MediaPipe.
 
-Người chơi điều khiển một chiếc giỏ để bắt các loại trái cây rơi từ trên xuống nhằm ghi điểm. Bên cạnh đó, các quả bom sẽ xuất hiện ngẫu nhiên và cần được tránh để không bị mất điểm hoặc kết thúc trò chơi.
+Fruit Catcher là một trò chơi arcade sử dụng camera để tương tác không chạm (Touchless Interaction). Người chơi điều khiển giỏ bằng chuyển động bàn tay để bắt các loại trái cây rơi từ trên xuống nhằm ghi điểm, đồng thời tránh các quả bom xuất hiện ngẫu nhiên trong quá trình chơi.
 
-Dự án được xây dựng với mục tiêu học tập và thực hành các kiến thức về Game Programming, Object-Oriented Programming (OOP), Game Architecture, Collision Detection, Asset Management và Real-Time System Design.
+Dự án được xây dựng với mục tiêu nghiên cứu và thực hành các kiến thức về:
+
+* Game Programming
+* Object-Oriented Programming (OOP)
+* State Machine
+* Event-Driven Architecture
+* Observer Pattern
+* Collision Detection
+* Computer Vision
+* Hand Tracking
 
 ---
 
 ## 🎮 Gameplay
 
-* Bắt trái cây để ghi điểm.
-* Tránh bom để không bị trừ điểm.
-* Hệ thống tính điểm theo thời gian thực.
-* Background Music và Sound Effects.
-* Gameplay đơn giản, dễ tiếp cận.
-* Kiến trúc được chia thành nhiều System độc lập để dễ mở rộng và bảo trì.
+* Điều khiển giỏ bằng chuyển động bàn tay thông qua camera.
+* Bắt trái cây để tăng điểm.
+* Tránh bom để không bị mất điểm hoặc kết thúc trò chơi.
+* Hệ thống UI tương tác không chạm.
+* Âm thanh nền và hiệu ứng âm thanh.
+* Gameplay đơn giản, dễ tiếp cận và có khả năng mở rộng.
 
 ---
 
-## 🛠️ Công nghệ sử dụng
+## 🛠️ Tech Stack
 
 * Python 3.10
 * Pygame
@@ -34,7 +42,15 @@ Dự án được xây dựng với mục tiêu học tập và thực hành cá
 
 ---
 
-## ✨ Tính năng chính
+## ✨ Features
+
+### Core Architecture
+
+* Game Manager
+* State Machine
+* Event System
+* Observer Pattern
+* System-Based Architecture
 
 ### Gameplay
 
@@ -42,27 +58,26 @@ Dự án được xây dựng với mục tiêu học tập và thực hành cá
 * Bomb Spawn System
 * Score Management
 * Difficulty Scaling
-* Game State Management
+* Object Lifecycle Management
 
 ### Input & Vision
 
 * Camera Input bằng OpenCV
 * Hand Tracking bằng MediaPipe
-* Chuyển đổi tọa độ từ Camera Space sang Game Space
-* Hỗ trợ điều khiển không chạm (Touchless Interaction)
+* Coordinate Mapping từ Camera Space sang Game Space
+* Touchless Interaction
 
 ### Rendering
 
-* Render Sprite
-* Render UI
-* Render Camera Overlay
-* Layer-based Rendering
+* Sprite Rendering
+* UI Rendering
+* Camera Overlay Rendering
+* Layer-Based Rendering
 
 ### Audio
 
 * Background Music
 * Sound Effects
-* Audio Cache System
 * Volume Control
 
 ---
@@ -77,6 +92,10 @@ Fruit-catcher/
 │   └── Sounds/
 │
 ├── Core/
+│   ├── event_type.py
+│   ├── game_manager.py
+│   ├── game_state.py
+│   └── observer.py
 │
 ├── Mocks/
 │
@@ -100,94 +119,183 @@ Fruit-catcher/
 
 ---
 
-## 🏗️ Kiến trúc hệ thống
+## 🏗️ Architecture Overview
 
-Dự án được tổ chức theo hướng System-Based Architecture.
+Dự án được tổ chức theo hướng **System-Based Architecture**, trong đó **Game Manager** đóng vai trò điều phối trung tâm và quản lý toàn bộ vòng đời của trò chơi.
 
 ```text
-Camera Input
-        │
-        ▼
+                 Game Manager
+                       │
+                (State Machine Control)
+                       │
+        ┌──────────────┬──────────────┐
+        ▼              ▼              ▼
+   Input System   Gameplay System   UI System
+        │              │              │
+        └───────┬──────┴──────┬───────┘
+                       ▼            
+                 Collision System
+                       │
+                       ▼
+                 Render System
+                       │
+                       ▼
+                  Audio System
+
 Vision System
+      │
+      ▼
+Input System
+```
+
+---
+
+## Core Components
+
+### Game Manager
+
+Game Manager là thành phần điều phối trung tâm của toàn bộ hệ thống.
+
+Chịu trách nhiệm:
+
+* Khởi tạo các System
+* Điều phối vòng lặp chính của game
+* Quản lý Game State
+* Điều khiển luồng xử lý giữa các System
+* Quản lý vòng đời trò chơi
+
+---
+
+### State Machine
+
+State Machine quản lý trạng thái hiện tại của game.
+
+Ví dụ:
+
+```text
+MENU
+ ↓
+PLAYING
+ ↓
+PAUSE
+ ↓
+GAME_OVER
+ ↓
+QUIT
+```
+
+Mọi quyết định chuyển đổi trạng thái đều được thực hiện thông qua Game Manager.
+
+---
+
+### Event System & Observer Pattern
+
+Cho phép các thành phần trong hệ thống giao tiếp với nhau mà không phụ thuộc trực tiếp vào nhau.
+
+Ví dụ:
+
+```text
+Fruit Collected
         │
         ▼
-Input System
+ Gameplay System
         │
- ┌──────┴──────┐
- ▼             ▼
-UI System   Gameplay System
-      │       │
-      └───┬───┘
-          ▼
-  Collision System
-          ▼
-    Render System
-          ▼
-     Audio System
+        ▼
+ Publish Event
+        │
+ ┌──────┼──────┐
+ ▼      ▼      ▼
+UI    Audio  Score
 ```
+
+Kiến trúc này giúp giảm coupling giữa các thành phần và tăng khả năng mở rộng của dự án.
+
+---
 
 ### Vision System
 
-Chịu trách nhiệm nhận dữ liệu từ camera, xử lý hình ảnh và phát hiện vị trí bàn tay thông qua MediaPipe.
+Chịu trách nhiệm:
+
+* Nhận dữ liệu từ camera
+* Xử lý hình ảnh bằng OpenCV
+* Phát hiện bàn tay bằng MediaPipe
+* Trích xuất vị trí fingertip
+
+---
 
 ### Input System
 
-Chuyển đổi dữ liệu từ Vision System thành dữ liệu đầu vào thống nhất để Gameplay System và UI System có thể sử dụng.
+Chịu trách nhiệm:
+
+* Chuyển đổi dữ liệu từ Vision System thành dữ liệu đầu vào của game
+* Mapping tọa độ từ Camera Space sang Game Space
+* Cung cấp dữ liệu đầu vào cho Gameplay System và UI System
+
+---
 
 ### Gameplay System
 
-Quản lý toàn bộ logic gameplay:
+Chịu trách nhiệm:
 
 * Spawn Fruit
 * Spawn Bomb
 * Quản lý Score
-* Quản lý Level
-* Điều khiển Game State
+* Quản lý Difficulty
+* Cập nhật trạng thái Game Object
+
+Gameplay System không quản lý Game State.
+
+---
 
 ### Collision System
 
-Xử lý va chạm giữa:
+Chịu trách nhiệm xử lý va chạm giữa:
 
-* Cursor và UI
 * Basket và Fruit
 * Basket và Bomb
 
+---
+
 ### Render System
 
-Chịu trách nhiệm hiển thị toàn bộ nội dung của trò chơi:
+Chịu trách nhiệm hiển thị:
 
 * Background
 * Game Objects
 * UI Components
 * Camera Overlay
 
-### Audio System
-
-Quản lý:
-
-* Background Music
-* Sound Effects
-* Volume Settings
-* Audio Resources
+Render System quyết định thứ tự hiển thị của các thành phần trong game.
 
 ---
 
-## 🚀 Hướng dẫn chạy dự án
+### Audio System
 
-### 1. Clone repository
+Chịu trách nhiệm:
+
+* Background Music
+* Sound Effects
+* Audio Resource Management
+* Volume Control
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone Repository
 
 ```bash
 git clone <repository-url>
 cd Fruit-catcher
 ```
 
-### 2. Tạo Virtual Environment bằng Python 3.10
+### 2. Create Virtual Environment (Python 3.10)
 
 ```bash
 py -3.10 -m venv .venv
 ```
 
-### 3. Kích hoạt Virtual Environment
+### 3. Activate Virtual Environment
 
 Windows:
 
@@ -195,21 +303,21 @@ Windows:
 .venv\Scripts\activate
 ```
 
-Sau khi kích hoạt thành công sẽ xuất hiện:
+Sau khi kích hoạt thành công:
 
 ```bash
 (.venv)
 ```
 
-ở đầu dòng lệnh.
+sẽ xuất hiện ở đầu dòng lệnh.
 
-### 4. Cài đặt dependencies
+### 4. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Chạy game
+### 5. Run The Game
 
 ```bash
 python main.py
@@ -217,7 +325,7 @@ python main.py
 
 ---
 
-## 🎯 Mục tiêu học tập
+## 🎯 Learning Objectives
 
 Dự án được xây dựng nhằm thực hành và nghiên cứu:
 
@@ -225,18 +333,25 @@ Dự án được xây dựng nhằm thực hành và nghiên cứu:
 * Game Development Fundamentals
 * Pygame Framework
 * Object-Oriented Design
-* Game Architecture
+* State Machine
+* Event-Driven Architecture
+* Observer Pattern
 * Collision Detection
-* Event-Driven Systems
 * Asset Management
-* Camera-based Interaction
+* Computer Vision
 * Hand Tracking với MediaPipe
 
 ---
 
 ## 📸 Demo
 
-Có thể bổ sung hình ảnh hoặc GIF gameplay tại đây sau khi dự án hoàn thiện.
+Có thể bổ sung:
+
+* Gameplay GIF
+* Screenshots
+* Architecture Diagram
+
+sau khi dự án hoàn thiện.
 
 ---
 
