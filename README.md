@@ -1,111 +1,245 @@
-# Fruit Catcher
+# 🍎 Fruit Catcher
+# 🍎 Fruit Catcher
 
-Fruit Catcher là một mini game được phát triển bằng Python và Pygame. Người chơi điều khiển giỏ để bắt các loại trái cây rơi từ trên xuống nhằm ghi điểm, đồng thời tránh các quả bom để không bị trừ điểm hoặc kết thúc trò chơi.
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![Pygame](https://img.shields.io/badge/Pygame-Game_Development-green)
+![Status](https://img.shields.io/badge/Status-In_Development-orange)
 
-Dự án được xây dựng nhằm mục đích học tập, thực hành lập trình game, quản lý asset, xử lý gameplay và tổ chức mã nguồn theo hướng đối tượng.
+Fruit Catcher là một game arcade được phát triển bằng Python và Pygame.
+
+Người chơi điều khiển một chiếc giỏ để bắt các loại trái cây rơi từ trên xuống nhằm ghi điểm. Bên cạnh đó, các quả bom sẽ xuất hiện ngẫu nhiên và cần được tránh để không bị mất điểm hoặc kết thúc trò chơi.
+
+Dự án được xây dựng với mục tiêu học tập và thực hành các kiến thức về Game Programming, Object-Oriented Programming (OOP), Game Architecture, Collision Detection, Asset Management và Real-Time System Design.
 
 ---
 
-## Requirements
+## 🎮 Gameplay
+
+* Bắt trái cây để ghi điểm.
+* Tránh bom để không bị trừ điểm.
+* Hệ thống tính điểm theo thời gian thực.
+* Background Music và Sound Effects.
+* Gameplay đơn giản, dễ tiếp cận.
+* Kiến trúc được chia thành nhiều System độc lập để dễ mở rộng và bảo trì.
+
+---
+
+## 🛠️ Công nghệ sử dụng
 
 * Python 3.10
-* pip
+* Pygame
+* OpenCV
+* MediaPipe
+* Object-Oriented Programming (OOP)
 
 ---
 
-## Setup Environment
+## ✨ Tính năng chính
 
-### 1. Clone repository
+### Gameplay
 
-```bash
-git clone <repository-url>
-cd Fruit_Catcher
-```
+* Fruit Spawn System
+* Bomb Spawn System
+* Score Management
+* Difficulty Scaling
+* Game State Management
 
-### 2. Create virtual environment
+### Input & Vision
 
-```bash
-python -m venv .venv
-```
+* Camera Input bằng OpenCV
+* Hand Tracking bằng MediaPipe
+* Chuyển đổi tọa độ từ Camera Space sang Game Space
+* Hỗ trợ điều khiển không chạm (Touchless Interaction)
 
-Hoặc nếu máy có nhiều phiên bản Python:
+### Rendering
 
-```bash
-py -3.10 -m venv .venv
-```
+* Render Sprite
+* Render UI
+* Render Camera Overlay
+* Layer-based Rendering
 
-### 3. Activate virtual environment
+### Audio
 
-**Windows**
-
-```bash
-.venv\Scripts\activate
-```
-
-**macOS / Linux**
-
-```bash
-source .venv/bin/activate
-```
-
-### 4. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
+* Background Music
+* Sound Effects
+* Audio Cache System
+* Volume Control
 
 ---
 
-## Run The Game
-
-Sau khi cài đặt hoàn tất, chạy entry point của dự án:
-
-```bash
-python main.py
-```
-
-> Nếu entry point của dự án sử dụng tên file khác, hãy thay `main.py` bằng file tương ứng.
-
----
-
-## Project Structure
+## 📂 Project Structure
 
 ```text
-Fruit_Catcher/
+Fruit-catcher/
 │
-├── assets/          # Images, audio, fonts
-├── src/             # Source code
-├── requirements.txt
+├── Assets/
+│   ├── Images/
+│   └── Sounds/
+│
+├── Core/
+│
+├── Mocks/
+│
+├── Models/
+│
+├── Systems/
+│   ├── Audio/
+│   ├── Collision/
+│   ├── GamePlay/
+│   ├── Input/
+│   ├── Render/
+│   ├── UI/
+│   └── Vision/
+│
+├── Utils/
+│
 ├── main.py
+├── requirements.txt
 └── README.md
 ```
 
 ---
 
-## Features
+## 🏗️ Kiến trúc hệ thống
 
-* Fruit spawning system
-* Bomb spawning system
-* Score tracking
-* Sound effects and background music
-* Object-oriented architecture
-* Pygame rendering pipeline
+Dự án được tổ chức theo hướng System-Based Architecture.
+
+```text
+Camera Input
+        │
+        ▼
+Vision System
+        │
+        ▼
+Input System
+        │
+ ┌──────┴──────┐
+ ▼             ▼
+UI System   Gameplay System
+      │       │
+      └───┬───┘
+          ▼
+  Collision System
+          ▼
+    Render System
+          ▼
+     Audio System
+```
+
+### Vision System
+
+Chịu trách nhiệm nhận dữ liệu từ camera, xử lý hình ảnh và phát hiện vị trí bàn tay thông qua MediaPipe.
+
+### Input System
+
+Chuyển đổi dữ liệu từ Vision System thành dữ liệu đầu vào thống nhất để Gameplay System và UI System có thể sử dụng.
+
+### Gameplay System
+
+Quản lý toàn bộ logic gameplay:
+
+* Spawn Fruit
+* Spawn Bomb
+* Quản lý Score
+* Quản lý Level
+* Điều khiển Game State
+
+### Collision System
+
+Xử lý va chạm giữa:
+
+* Cursor và UI
+* Basket và Fruit
+* Basket và Bomb
+
+### Render System
+
+Chịu trách nhiệm hiển thị toàn bộ nội dung của trò chơi:
+
+* Background
+* Game Objects
+* UI Components
+* Camera Overlay
+
+### Audio System
+
+Quản lý:
+
+* Background Music
+* Sound Effects
+* Volume Settings
+* Audio Resources
 
 ---
 
-## Development Notes
+## 🚀 Hướng dẫn chạy dự án
 
-Dự án sử dụng:
+### 1. Clone repository
 
-* Python 3.10
-* Pygame
-* OpenCV (nếu được tích hợp)
-* MediaPipe (nếu được tích hợp)
+```bash
+git clone <repository-url>
+cd Fruit-catcher
+```
 
-Khuyến nghị sử dụng đúng phiên bản Python 3.10 để đảm bảo khả năng tương thích với các thư viện được sử dụng trong dự án.
+### 2. Tạo Virtual Environment bằng Python 3.10
+
+```bash
+py -3.10 -m venv .venv
+```
+
+### 3. Kích hoạt Virtual Environment
+
+Windows:
+
+```bash
+.venv\Scripts\activate
+```
+
+Sau khi kích hoạt thành công sẽ xuất hiện:
+
+```bash
+(.venv)
+```
+
+ở đầu dòng lệnh.
+
+### 4. Cài đặt dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 5. Chạy game
+
+```bash
+python main.py
+```
 
 ---
 
-## Author
+## 🎯 Mục tiêu học tập
 
-Developed as a learning project for studying game programming, gameplay systems, and software architecture using Python.
+Dự án được xây dựng nhằm thực hành và nghiên cứu:
+
+* Python Programming
+* Game Development Fundamentals
+* Pygame Framework
+* Object-Oriented Design
+* Game Architecture
+* Collision Detection
+* Event-Driven Systems
+* Asset Management
+* Camera-based Interaction
+* Hand Tracking với MediaPipe
+
+---
+
+## 📸 Demo
+
+Có thể bổ sung hình ảnh hoặc GIF gameplay tại đây sau khi dự án hoàn thiện.
+
+---
+
+## 👨‍💻 Tác giả
+
+Dự án của nhóm 2 thành viên được phát triển nhằm nghiên cứu và thực hành quy trình phát triển game, kiến trúc phần mềm và các công nghệ xử lý tương tác bằng camera trong môi trường Python.
