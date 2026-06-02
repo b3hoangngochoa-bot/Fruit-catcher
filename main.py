@@ -133,6 +133,8 @@ def main():
     # 🔄 MAIN LOOP
     while running:
         delta_time = clock.tick(FPS) / 1000.0  # Convert ms to seconds
+        delta_time = min(delta_time, 0.05)  # Cap delta_time to avoid big jumps
+
         # 1. Handle system-level events (OS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -169,6 +171,7 @@ def main():
 
         # 4. FPS control
         clock.tick(FPS)
+        pygame.display.set_caption(f"Fruit Catching Game - FPS: {clock.get_fps():.2f}")
 
         pygame.display.flip()
 
