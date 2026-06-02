@@ -345,8 +345,8 @@ Dự án được xây dựng nhằm thực hành và nghiên cứu:
 
 ## 📸 Demo
 
-* Gameplay Screen: ./Assets/Images/Demo/demo_gameplay_screen.png
-* Screenshots Menu: ./Assets/Images/Demo/demo_background_menu.png 
+* Gameplay Screen: ![Menu Demo](Assets/Images/Demo/demo_background_menu.png)
+* Screenshots Menu: ![Gameplay Demo](Assets/Images/Demo/demo_gameplay_screen.png)
 
 ---
 
