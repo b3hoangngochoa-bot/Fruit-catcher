@@ -5,6 +5,7 @@ from Core.game_state import Mode
 # Vision
 from Systems.Vision.camera import Camera
 from Systems.Vision.hand_detector import HandDetector
+from Systems.Vision.camera_overlay import CameraOverlay
 from Systems.Vision.vision_system import VisionSystem
 
 # Input
@@ -44,13 +45,16 @@ def create_systems(screen):
     # Vision
     camera = Camera()
     detector = HandDetector()
+    camera_overlay = CameraOverlay(360, 270)
     vision_system = VisionSystem(camera, detector)
 
     # Input
     mapper = CoordinateMapper()
     smoother = Smoother()
-    gesture_detector = GestureDetector()   
-    input_system = InputSystem(mapper, smoother, event_bus, gesture_detector)  # Dùng Vision thật
+    gesture_detector = GestureDetector()
+    input_system = InputSystem(
+        mapper, smoother, event_bus, gesture_detector
+    )  # Dùng Vision thật
     # input_system = MouseInputSystemMock()  # Mock dùng chuột để test UI
 
     # Collision
@@ -84,6 +88,7 @@ def create_systems(screen):
 
     return {
         "vision": vision_system,
+        "camera_overlay": camera_overlay,
         "input": input_system,
         "ui": ui_system,
         "gameplay": gameplay_system,
@@ -113,6 +118,7 @@ def main():
     # 🧠 Inject vào GameManager
     game_manager = GameManager(
         vision_system=systems["vision"],
+        camera_overlay=systems["camera_overlay"],
         input_system=systems["input"],
         ui_system=systems["ui"],
         gameplay_system=systems["gameplay"],
@@ -139,12 +145,18 @@ def main():
                     running = False
                 if event.key == pygame.K_p:
                     if game_manager.state == Mode.PLAYING:
-                        systems["event_bus"].emit(EventType.GAME_PAUSE, {"name": "pause_game"})
+                        systems["event_bus"].emit(
+                            EventType.GAME_PAUSE, {"name": "pause_game"}
+                        )
                     elif game_manager.state == Mode.PAUSE:
-                        systems["event_bus"].emit(EventType.GAME_RESUME, {"name": "resume_game"})
+                        systems["event_bus"].emit(
+                            EventType.GAME_RESUME, {"name": "resume_game"}
+                        )
                 if event.key == pygame.K_o:
                     if game_manager.state == Mode.PLAYING:
-                        systems["event_bus"].emit(EventType.GAME_OVER, {"name": "game_over"})
+                        systems["event_bus"].emit(
+                            EventType.GAME_OVER, {"name": "game_over"}
+                        )
 
         # 2. Update Vision (camera + hand detect)
         systems["vision"].update()

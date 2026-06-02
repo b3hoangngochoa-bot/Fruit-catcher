@@ -49,6 +49,7 @@ class VisionSystem:
 
         # Detect + extract + package (Task 2 → 5)
         self._hand_data = self.hand_detector.detect(frame)
+        self._hand_data["frame"] = self.hand_detector.draw_landmarks(self._hand_data)
 
     def get_hand_data(self) -> dict:
         """
