@@ -1,5 +1,5 @@
 from Utils.constants import PATH_TO_MUSIC
-from Utils.load_asset import load_sfx, load_music
+from Utils.load_asset import load_sfx
 from Core.event_type import EventType
 
 
@@ -22,7 +22,6 @@ class AudioSystem:
             "go_to_menu": ["go_to_menu", "mp3"],
         }
         self.sfx_cache = {}
-        self.music_cache = {}
         self.event_bus.subscribe(EventType.FRUIT_HIT, self._on_fruit_hit)
         self.event_bus.subscribe(EventType.BOMB_HIT, self._on_bomb_hit)
         self.event_bus.subscribe(EventType.LEVEL_UP, self._on_level_up)

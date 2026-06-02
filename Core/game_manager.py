@@ -13,6 +13,7 @@ class GameManager:
         render_system,
         ui_system,
         vision_system,
+        camera_overlay,
         audio_system,
         event_bus,
     ):
@@ -22,6 +23,7 @@ class GameManager:
         self.render_system = render_system
         self.ui_system = ui_system
         self.vision_system = vision_system
+        self.camera_overlay = camera_overlay
         self.audio_system = audio_system
 
         # Subscribe to game events
@@ -37,13 +39,10 @@ class GameManager:
         self.state = Mode.MENU  # default state
         self.cursor = Cursor()
 
-    def game_loop(self):
-        # Main game loop to update and render the game
-        pass
-
     def update(self, delta_time):
         # 1. Lấy hand_data từ VisionSystem (đã được update() ở main loop)
         hand_data = self.vision_system.get_hand_data()
+        self.camera_overlay.update(hand_data["frame"])  # Cập nhật frame cho camera overlay
 
         # 2. Chuyển hand_data → input_data + tự emit gesture event nếu có
         input_data = self.input_system.update(hand_data=hand_data, delta_time=delta_time)
@@ -65,11 +64,12 @@ class GameManager:
         render_queue = []
 
         if self.state == Mode.PLAYING:
-            render_queue += self.gameplay_system.get_render_data()
+            render_queue.extend(self.gameplay_system.get_render_data())
 
-        render_queue += self.ui_system.get_render_data(self.state)
+        render_queue.extend(self.ui_system.get_render_data(self.state))
 
         render_queue.append(self.cursor.get_render_data())
+        render_queue.append(self.camera_overlay.get_render_data())  # Debug camera frame + landmarks
 
         self.render_system.draw(render_queue)
 

@@ -1,5 +1,5 @@
 import pygame
-from Utils.constants import PATH_TO_IMAGES, PATH_TO_SFX, PATH_TO_MUSIC
+from Utils.constants import PATH_TO_IMAGES, PATH_TO_SFX
 from Models.fruit_type import FruitType
 
 
@@ -41,6 +41,3 @@ def load_ui_image(name, ext="jpg", width=None, height=None):
 
 def load_sfx(name,ext, mixer=None):
     return mixer.Sound(PATH_TO_SFX + f"{name}.{ext}")
-
-def load_music(name,ext, mixer=None):
-    return mixer.music.load(PATH_TO_MUSIC + f"{name}.{ext}")
