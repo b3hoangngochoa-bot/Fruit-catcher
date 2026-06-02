@@ -345,13 +345,8 @@ Dự án được xây dựng nhằm thực hành và nghiên cứu:
 
 ## 📸 Demo
 
-Có thể bổ sung:
-
-* Gameplay Screen: Assets/Images/Demo/demo_gameplay_screen.png
-* Screenshots Menu: Assets/Images/Demo/demo_background_menu.png 
-* Architecture Diagram
-
-sau khi dự án hoàn thiện.
+* Gameplay Screen: ./Assets/Images/Demo/demo_gameplay_screen.png
+* Screenshots Menu: ./Assets/Images/Demo/demo_background_menu.png 
 
 ---
 
