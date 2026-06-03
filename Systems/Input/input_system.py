@@ -1,4 +1,3 @@
-import Utils.constants as constants
 from Core.event_type import EventType
 from Systems.Input.gesture_detector import GestureDetector
 
@@ -17,8 +16,8 @@ class InputSystem:
 
     Output (input_data):
         {
-            "cursor": { "x": int, "y": int, "click": bool },
-            "basket": { "x": int, "y": int, "radius": int }
+            "cursor": { "x": int, "y": int },
+            "basket": { "x": int, "y": int }
         }
     """
 
@@ -49,9 +48,8 @@ class InputSystem:
         Returns:
             input_data dict:
             {
-                "cursor":  { "x": int, "y": int, "click": bool },
-                "basket":  { "x": int, "y": int, "radius": int },
-                "gesture": str | None
+                "cursor":  { "x": int, "y": int },
+                "basket":  { "x": int, "y": int },
             }
             Khi không phát hiện tay: x/y là None.
         """
@@ -60,7 +58,7 @@ class InputSystem:
             self.smoother.reset()
             # Vẫn chạy gesture detector để debounce tiếp tục đếm
             self.gesture_detector.update(hand_data, delta_time)
-            return self._package(x=None, y=None, click=False)
+            return self._package(x=None, y=None)
 
         fingertip = hand_data["fingertip"]
 
@@ -83,12 +81,12 @@ class InputSystem:
             self.event_bus.emit(event_type, {"name": name})
 
         # --- Task 3 + 4 + 6: Generate cursor, basket, package output ---
-        return self._package(x=x, y=y, click=False)
+        return self._package(x=x, y=y)
 
     # ------------------------------------------------------------------
     # Private helpers
     # ------------------------------------------------------------------
-    def _package(self, x, y, click: bool) -> dict:
+    def _package(self, x, y) -> dict:
         """
         Task 3: Cursor Generation
         Task 4: Basket Generation
@@ -99,12 +97,10 @@ class InputSystem:
             "cursor": {
                 "x": x,
                 "y": y,
-                "click": click,  # TODO: detect gesture "pinch" → True
             },
             # Task 4 — basket vùng bắt trái (cùng vị trí cursor)
             "basket": {
                 "x": x,
                 "y": y,
-                "radius": self.BASKET_RADIUS,
             },
         }
